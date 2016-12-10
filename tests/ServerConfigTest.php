@@ -22,6 +22,11 @@ class ServerConfigTest extends \PHPUnit_Framework_TestCase
 		$this->config = new ServerConfig(__DIR__ . '/fixtures/j3x.xml');
 	}
 
+	public function testConfigurationIsRead()
+	{
+		$this->assertEquals('postgresql', $this->config->get('database.driver'));
+	}
+
 	public function testDefaultIsIncorporated()
 	{
 		$this->assertEquals(1, $this->config->get('debug.system'));
