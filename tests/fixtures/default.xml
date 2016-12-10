@@ -1,0 +1,11 @@
+<environment name="default">
+    <joomla version="3" sampleData="data"/>
+    <database driver="mysql" name="joomla3" prefix="j3m_"/>
+    <server type="nginx" offset="UTC"/>
+    <cache enabled="0" time="15" handler="file"/>
+    <debug system="1" language="1"/>
+    <meta description="Test installation" keywords="" showVersion="0" showTitle="1" showAuthor="1"/>
+    <sef enabled="0" rewrite="0" suffix="0" unicode="0"/>
+    <feeds limit="10" email="author"/>
+    <session lifetime="15" handler="database"/>
+</environment>

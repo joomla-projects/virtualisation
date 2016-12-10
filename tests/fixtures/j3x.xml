@@ -1,0 +1,5 @@
+<environment name="j3-postgresql">
+    <joomla version="3"/>
+    <server type="nginx"/>
+    <database driver="postgresql" prefix="j3p_"/>
+</environment>
