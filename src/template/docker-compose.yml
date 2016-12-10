@@ -1,0 +1,60 @@
+apache:
+  build: ${build}/docker/apache
+  volumes:
+    - ${server-dockyard}/apache/conf:/etc/apache2/sites-enabled
+    - ${server-dockyard}/apache/html:/var/www/html
+    - ${build}/vendor:/usr/local/lib/php/vendor
+  environment:
+    DISTFILES: $DISTFILES
+  links:
+    - mysql
+    - pgsql:postgresql
+
+nginx:
+  image: nginx
+  volumes:
+    - "${server-dockyard}/nginx/conf:/etc/nginx/conf.d"
+    - "${server-dockyard}/nginx/html:/var/www/html"
+    - "${build}/vendor:/usr/local/lib/php/vendor"
+  environment:
+    DISTFILES: $DISTFILES
+  links:
+    - php
+
+proxy:
+  build: ${build}/docker/nginx-proxy
+  volumes:
+    - "${server-dockyard}/proxy/conf:/etc/nginx/conf.d"
+  ports:
+    - "80:80"
+  links:
+    - apache:web_apache
+    - nginx:web_nginx
+
+php:
+  build: ${build}/docker/php-fpm
+  volumes:
+    - "${server-dockyard}/nginx/html:/var/www/html"
+    - "${build}/vendor:/usr/local/lib/php/vendor"
+  links:
+    - mysql
+    - pgsql:postgresql
+
+mysql:
+  image: greencape/mariadb:${database.mysql.version}
+  volumes:
+    - "${server-dockyard}/mysql:/import.d"
+  environment:
+    MYSQL_DATABASE: ${database.mysql.name}
+    MYSQL_ROOT_PASSWORD: ${database.mysql.rootPassword}
+    MYSQL_USER: ${database.mysql.user}
+    MYSQL_PASSWORD: ${database.mysql.password}
+
+pgsql:
+  image: postgres:${database.postgresql.version}
+  volumes:
+    - "${server-dockyard}/postgresql:/docker-entrypoint-initdb.d"
+  environment:
+    POSTGRES_DB: ${database.postgresql.name}
+    POSTGRES_USER: ${database.postgresql.user}
+    POSTGRES_PASSWORD: ${database.postgresql.password}

@@ -1,0 +1,11 @@
+{
+  "name": "joomla-projects/docker-images",
+  "description": "A set of Docker images used for automated testing.",
+  "minimum-stability": "stable",
+  "license": "GPL2+",
+  "authors": [
+    {
+      "name": "Joomla! Project"
+    }
+  ]
+}
