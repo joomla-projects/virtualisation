@@ -6,7 +6,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\ServerConfig;
+namespace Joomla\Tests\Testing;
 
 use Joomla\Testing\ServerConfig;
 
