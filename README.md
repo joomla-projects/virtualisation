@@ -44,9 +44,10 @@ Defines version and credentials for a PostgreSQL database server.
 
 ```xml
 <environment name="env-name">
+    <host dockyard="shipyard"/>
     <joomla version="3" sampleData="data"/>
     <database driver="mysql" name="joomla3" prefix="j3m_"/>
-    <server type="nginx" offset="UTC"/>
+    <server type="nginx" offset="UTC" tld="dev"/>
     <cache enabled="0" time="15" handler="file"/>
     <debug system="1" language="1"/>
     <meta description="Test installation" keywords="" showVersion="0" showTitle="1" showAuthor="1"/>
@@ -60,6 +61,12 @@ Defines version and credentials for a PostgreSQL database server.
 
 Common settings to all test servers are kept in an environment named `default` and stored in `default.xml`.
 An average environment definition will contain just the server, joomla, and database elements.
+
+##### `host`
+
+Defines settings of the docker host.
+
+- `dockyard` - This setting determines the directory, where the the generated volumes (file systems) are located.
 
 ##### `joomla`
 
@@ -82,6 +89,7 @@ Define the server settings.
 
 - `type` - The engine to use. Valid values are nginx and apache.
 - `offset` - The time zone.
+- `tld` - The top level domain for the URL.
 
 ##### `cache`
 
@@ -115,7 +123,7 @@ Defines the Joomla! SEF settings. These values are written to the `configuration
 - `enabled` - Joomla’s internal representation of URLs tends to be lengthy and also difficult to interpret by humans and search engine spiders. This is a typical example of the internal URL for a page displaying a content item: www.example.com/index.php?option=com_content&view=article&id=22&Itemid=437. If this option is set to “1”, the URL is modified into a shorter and more meaningful form: www.example.com/index.php/getting-started. The identifying text in the URL (in this case “getting_started”) is derived from the Alias text set up for each Category, content item, and Menu item.
 - `rewrite` - When this parameter is set to “1”, Joomla will use the mod_rewrite function of Apache web servers to eliminate the `index.php` part of the URL. Thus when this is operating the “search engine friendly” URL shown above will become: www.example.com/getting-started.
 
-   > This parameter is set to “0” by default. It should not be set to “1” unless the web server uses Apache software. The `htaccess.txt` file is automatically renamed to `.htaccess`.
+   *Note: This parameter is set to “0” by default. It should not be set to “1” unless the web server uses Apache software. The `htaccess.txt` file is automatically renamed to `.htaccess`.*
 
 - `suffix` - When set to “1”, Joomla will add .html to the end of the most site URLs thus simulating static file-based web content. The URLs shown above will then become: www.example.com/index.php/getting-started.html or www.example.com/getting-started.html.
 - `unicode` - (Only present in Joomla v1.6.x and later.) When saving edited content, the former setting attempts to convert, where appropriate, any alias text into the corresponding Latin characters. When set to “1”, Joomla leaves any non-Latin characters in the alias text unchanged. Changing this parameter does not retroactively change aliases, it just changes the behaviour of automatic alias generation for future content editing and creation.
