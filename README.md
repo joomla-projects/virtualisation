@@ -113,7 +113,7 @@ Defines the Joomla! meta settings. These values are written to the `configuratio
 - `description` - Text added here appears in web page headers as the “description” metadata entry.
 - `keywords` - Words and phrases (separated by commas) added here appear in web page headers as the “keywords” metadata entry.
 - `showVersion` - Whether or not to expose the Joomla version in the metadata.
-- `showTitle` - (Only present in Joomla v1.6.x and later.) Appends the site name to page titles in the <title> tag of each web page header. Joomla v1.6.x introduced this feature as an option to either include the site name text before the page title (e.g. Site Name – Page Name) or omit it. With Joomla v1.7.x the options also include inserting the site name after the page name (e.g. Page Name – Site Name) as well as before.
+- `showTitle` - (Only present in Joomla v1.6.x and later.) Appends the site name to page titles in the `title` tag of each web page header. Joomla v1.6.x introduced this feature as an option to either include the site name text before the page title (e.g. Site Name – Page Name) or omit it. With Joomla v1.7.x the options also include inserting the site name after the page name (e.g. Page Name – Site Name) as well as before.
 - `showAuthor` - When this parameter is set to “1” an “author” metadata entry is added to the page header when appropriate, using the content item’s author name as the metadata text.
 
 ##### `sef`
