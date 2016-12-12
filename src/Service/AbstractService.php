@@ -1,34 +1,46 @@
 <?php
 /**
- * Part of the Joomla Testing Framework Package
+ * Part of the Joomla Virtualisation Package
  *
  * @copyright  Copyright (C) 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Testing\Service;
+namespace Joomla\Virtualisation\Service;
 
-use Joomla\Testing\ServerConfig;
+use Joomla\Virtualisation\ServerConfig;
 
 /**
  * Class AbstractService
  *
- * @package  Joomla\Testing
+ * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
 abstract class AbstractService implements Service
 {
 	/**
+	 * @var string
+	 */
+	protected $version;
+
+	/**
 	 * @var ServerConfig[]
 	 */
 	protected $configs;
 
-	public function __construct(ServerConfig $config)
+	/**
+	 * @var  string
+	 */
+	protected $dockyard;
+
+	public function __construct($version, ServerConfig $config)
 	{
-		$this->setConfiguration($config);
+		$this->version  = $version;
+		$this->dockyard = $config->get('host.dockyard');
+		$this->addConfiguration($config);
 	}
 
-	public function setConfiguration(ServerConfig $config)
+	public function addConfiguration(ServerConfig $config)
 	{
 		$this->configs[] = $config;
 	}

@@ -1,21 +1,22 @@
 <?php
 /**
- * Part of the Joomla Testing Framework Package
+ * Part of the Joomla Virtualisation Package
  *
  * @copyright  Copyright (C) 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Testing;
+namespace Joomla\Virtualisation;
 
-use Joomla\Testing\Service\Service;
+use Joomla\Virtualisation\Service\Map;
+use Joomla\Virtualisation\Service\Service;
 
 /**
  * Class ServiceFactory
  *
  * Creates the YAML stubs (configuration) for the docker compose file
  *
- * @package  Joomla\Testing
+ * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
 class ServiceFactory
@@ -25,14 +26,6 @@ class ServiceFactory
 	 */
 	private $config;
 
-	private $mapping = [
-		'apache'     => '\\Joomla\\Testing\\Service\\Apache',
-		'nginx'      => '\\Joomla\\Testing\\Service\\Nginx',
-		'postgresql' => '\\Joomla\\Testing\\Service\\PostgreSql',
-		'mysql'      => '\\Joomla\\Testing\\Service\\MySql',
-		'php'        => '\\Joomla\\Testing\\Service\\PhpFpm',
-	];
-
 	/**
 	 * @var Service[][]
 	 */
@@ -40,17 +33,7 @@ class ServiceFactory
 
 	public function getWebserver()
 	{
-		return $this->getService($this->config->get('server.type'), $this->config->get('server.version'));
-	}
-
-	public function getDatabaseServer()
-	{
-		return $this->getService($this->config->get('database.driver'), $this->config->get('database.version'));
-	}
-
-	public function getPhpServer()
-	{
-		return $this->getService('php', $this->config->get('php.version'));
+		return $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
 	}
 
 	/**
@@ -60,25 +43,31 @@ class ServiceFactory
 	 */
 	private function getService($server, $version)
 	{
+		$service = Map::getClass($server);
+
 		if (empty($version)) {
 			$version = 'latest';
 		}
 
-		if (isset($this->cache[$server][$version])) {
-			$this->cache[$server][$version]->setConfiguration($this->config);
+		if (isset($this->cache[$service][$version])) {
+			$this->cache[$service][$version]->addConfiguration($this->config);
 
-			return $this->cache[$server][$version];
+			return $this->cache[$service][$version];
 		}
 
-		if (!isset($this->mapping[$server])) {
-			throw new \RuntimeException("Unknown Service $server");
-		}
+		$this->cache[$service][$version] = new $service($version, $this->config);
 
-		$serviceClass = $this->mapping[$server];
+		return $this->cache[$service][$version];
+	}
 
-		$this->cache[$server][$version] = new $serviceClass($this->config);
+	public function getDatabaseServer()
+	{
+		return $this->getService($this->config->get('database.driver'), $this->config->getVersion('database'));
+	}
 
-		return $this->cache[$server][$version];
+	public function getPhpServer()
+	{
+		return $this->getService('php', $this->config->getVersion('php'));
 	}
 
 	/**

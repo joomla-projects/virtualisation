@@ -1,6 +1,6 @@
-FROM php:5.6-apache
+FROM php:${php.version}-apache
 
-MAINTAINER Joomla! Automated Testing Working Group
+MAINTAINER Joomla! Automated Virtualisation Working Group
 
 RUN apt-get update \
     && apt-get install -y \
@@ -12,13 +12,13 @@ RUN apt-get update \
         libsqlite3-dev
 
 # Setup the Xdebug version to install
-ENV XDEBUG_VERSION 2.2.7
-ENV XDEBUG_MD5 71a6b75885207e79762e1e7aaf5c3993
+ENV XDEBUG_VERSION ${xdebug.version}
+ENV XDEBUG_HASH ${xdebug.hash}
 
 # Install Xdebug
 RUN set -x \
     && curl -SL "http://www.xdebug.org/files/xdebug-$XDEBUG_VERSION.tgz" -o xdebug.tgz \
-    && echo $XDEBUG_MD5 xdebug.tgz | md5sum -c - \
+    && echo $XDEBUG_HASH xdebug.tgz | ${xdebug.hashtype}sum -c - \
     && mkdir -p /usr/src/xdebug \
     && tar -xf xdebug.tgz -C /usr/src/xdebug --strip-components=1 \
     && rm xdebug.* \

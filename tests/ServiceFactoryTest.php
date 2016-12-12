@@ -1,18 +1,18 @@
 <?php
 /**
- * Part of the Joomla Testing Framework Test Suite
+ * Part of the Joomla Virtualisation Test Suite
  *
  * @copyright  Copyright (C) 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Testing;
+namespace Joomla\Tests\Virtualisation;
 
-use Joomla\Testing\ServerConfig;
-use Joomla\Testing\Service\Nginx;
-use Joomla\Testing\Service\PhpFpm;
-use Joomla\Testing\Service\PostgreSql;
-use Joomla\Testing\ServiceFactory;
+use Joomla\Virtualisation\ServerConfig;
+use Joomla\Virtualisation\Service\Nginx;
+use Joomla\Virtualisation\Service\PhpFpm;
+use Joomla\Virtualisation\Service\PostgreSql;
+use Joomla\Virtualisation\ServiceFactory;
 
 class ServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {

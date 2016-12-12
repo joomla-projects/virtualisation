@@ -1,4 +1,4 @@
 
-CREATE DATABASE IF NOT EXISTS `${environment.database.name}` CHARACTER SET 'utf8';
-GRANT ALL ON `${environment.database.name}`.* TO '${database.mysql.user}'@'%';
-USE `${environment.database.name}`;
+CREATE DATABASE IF NOT EXISTS `${database.name}` CHARACTER SET 'utf8';
+GRANT ALL ON `${database.name}`.* TO '${mysql.user}'@'%';
+USE `${database.name}`;

@@ -1,19 +1,19 @@
 <?php
 /**
- * Part of the Joomla Testing Framework Package
+ * Part of the Joomla Virtualisation Package
  *
  * @copyright  Copyright (C) 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Testing;
+namespace Joomla\Virtualisation;
 
 /**
  * Class ServerConfig
  *
  * Reads the configuration XML files and provides the corresponding values.
  *
- * @package  Joomla\Testing
+ * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
 class ServerConfig
@@ -25,13 +25,14 @@ class ServerConfig
 		'cache.enabled'       => "0",
 		'cache.handler'       => "file",
 		'cache.time'          => "15",
-		'database.driver'     => "mysql",
+		'database.driver'     => "mysqli",
 		'database.name'       => "joomla3",
 		'database.prefix'     => "j3m_",
 		'debug.language'      => "1",
 		'debug.system'        => "1",
 		'feeds.email'         => "author",
 		'feeds.limit'         => "10",
+		'host.dockyard'       => 'shipyard',
 		'joomla.sampleData'   => "data",
 		'joomla.version'      => "3",
 		'meta.description'    => "Test installation",
@@ -55,6 +56,7 @@ class ServerConfig
 		'sef.suffix'          => "0",
 		'sef.unicode'         => "0",
 		'server.offset'       => "UTC",
+		'server.tld'          => "dev",
 		'server.type'         => "nginx",
 		'session.handler'     => "database",
 		'session.lifetime'    => "15",
@@ -69,21 +71,9 @@ class ServerConfig
 	{
 		$path = dirname($filename);
 
-		$this->config = $this->read($path . '/default.xml');
+		$this->config = array_merge($this->config, $this->read($path . '/default.xml'));
 		$this->config = array_merge($this->config, $this->read($path . '/database.xml'));
 		$this->config = array_merge($this->config, $this->read($filename));
-	}
-
-	/**
-	 * Get a configuration value
-	 *
-	 * @param   string $key The key
-	 *
-	 * @return  string  The value
-	 */
-	public function get($key)
-	{
-		return isset($this->config[$key]) ? $this->config[$key] : null;
 	}
 
 	/**
@@ -113,5 +103,32 @@ class ServerConfig
 		}
 
 		return $config;
+	}
+
+	public function getVersion($key)
+	{
+		$version = $this->get("$key.version");
+
+		if (empty($version)) {
+			$version = 'latest';
+		}
+
+		return $version;
+	}
+
+	/**
+	 * Get a configuration value
+	 *
+	 * @param   string $key The key
+	 *
+	 * @return  string  The value
+	 */
+	public function get($key)
+	{
+		if (!isset($this->config[$key])) {
+			return null;
+		}
+
+		return $this->config[$key];
 	}
 }

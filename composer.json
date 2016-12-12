@@ -1,6 +1,6 @@
 {
-  "name": "joomla-projects/docker-images",
-  "description": "A set of Docker images used for automated testing.",
+  "name": "joomla-projects/virtualisation",
+  "description": "An XML based generator for docker environments, mostly used for automated testing.",
   "minimum-stability": "stable",
   "license": "GPL2+",
   "authors": [
@@ -10,8 +10,11 @@
   ],
   "autoload": {
     "psr-4": {
-      "Joomla\\Testing\\": "src"
+      "Joomla\\Virtualisation\\": "src"
     }
+  },
+  "require": {
+    "greencape/php-versions": "v1.0.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"

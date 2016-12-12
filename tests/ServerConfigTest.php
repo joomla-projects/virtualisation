@@ -1,14 +1,14 @@
 <?php
 /**
- * Part of the Joomla Testing Framework Test Suite
+ * Part of the Joomla Virtualisation Test Suite
  *
  * @copyright  Copyright (C) 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Testing;
+namespace Joomla\Tests\Virtualisation;
 
-use Joomla\Testing\ServerConfig;
+use Joomla\Virtualisation\ServerConfig;
 
 class ServerConfigTest extends \PHPUnit_Framework_TestCase
 {

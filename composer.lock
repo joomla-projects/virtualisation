@@ -4,9 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "847e1ca9a5d6383f95886fc053fdce0c",
-    "content-hash": "2e8936fc576a46a3576ad07aa2588981",
-    "packages": [],
+    "hash": "925ea5529413a24b19db6a42a3230313",
+    "content-hash": "6c4d6f4e4270fad7a2697602ed4386ba",
+    "packages": [
+        {
+            "name": "greencape/php-versions",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GreenCape/php-versions.git",
+                "reference": "fca69c5b9ded890c9ac381356253257ae95ea7a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GreenCape/php-versions/zipball/fca69c5b9ded890c9ac381356253257ae95ea7a8",
+                "reference": "fca69c5b9ded890c9ac381356253257ae95ea7a8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Greencape\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "A utility class to provide a list of all PHP versions and their matching xDebug version.",
+            "homepage": "https://github.com/GreenCape/php-versions",
+            "time": "2016-12-12 12:56:41"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
