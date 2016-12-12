@@ -50,8 +50,12 @@ class NginxTest extends \PHPUnit_Framework_TestCase
 	public function testFilesystemIsSetUp()
 	{
 		$this->service->prepare();
-		/*
-		 * @todo Check files
-		 */
+
+		$filename = 'tests/tmp/docker/nginx-1.9/conf/j3-postgresql.dev/vhost.conf';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('server_name   j3-postgresql.dev;', $content);
+		$this->assertContains('root          /var/www/html/j3-postgresql.dev;', $content);
 	}
 }

@@ -51,8 +51,18 @@ class ApacheTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		/*
-		 * @todo Check files
-		 */
+		$filename = 'tests/tmp/docker/apache-5.2/Dockerfile';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('FROM php:5.2-apache', $content);
+		$this->assertContains('ENV XDEBUG_VERSION 2.2.7', $content);
+
+		$filename = 'tests/tmp/docker/apache-5.2/conf/j25-mysqli.dev';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('ServerName      j25-mysqli.dev', $content);
+		$this->assertContains('DocumentRoot    /var/www/html/j25-mysqli.dev', $content);
 	}
 }

@@ -49,8 +49,12 @@ class PhpFpmTest extends \PHPUnit_Framework_TestCase
 	public function testFilesystemIsSetUp()
 	{
 		$this->service->prepare();
-		/*
-		 * @todo Check files
-		 */
+
+		$filename = 'tests/tmp/docker/php-5.2/Dockerfile';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('FROM php:5.2-fpm', $content);
+		$this->assertContains('ENV XDEBUG_VERSION 2.2.7', $content);
 	}
 }

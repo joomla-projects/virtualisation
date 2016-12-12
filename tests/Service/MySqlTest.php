@@ -52,8 +52,11 @@ class MySqlTest extends \PHPUnit_Framework_TestCase
 	public function testFilesystemIsSetUp()
 	{
 		$this->service->prepare();
-		/*
-		 * @todo Check files
-		 */
+
+		$filename = 'tests/tmp/mysql-latest/joomla25.sql';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('CREATE DATABASE IF NOT EXISTS `joomla25`', $content);
 	}
 }

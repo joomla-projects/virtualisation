@@ -52,8 +52,11 @@ class PostgreSqlTest extends \PHPUnit_Framework_TestCase
 	public function testFilesystemIsSetUp()
 	{
 		$this->service->prepare();
-		/*
-		 * @todo Check files
-		 */
+
+		$filename = 'tests/tmp/pgsql-latest/joomla3.sql';
+		$this->assertFileExists($filename);
+
+		$content = file_get_contents($filename);
+		$this->assertContains('CREATE DATABASE "joomla3" OWNER "sqladmin"', $content);
 	}
 }
