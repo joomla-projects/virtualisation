@@ -6,13 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Virtualisation;
+namespace Joomla\Tests\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
-class ApacheTest extends \PHPUnit_Framework_TestCase
+class ApacheTest extends ServiceTestCase
 {
 	/**
 	 * @var  Service  The object under test
@@ -51,18 +51,20 @@ class ApacheTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		$filename = 'tests/tmp/docker/apache-5.2/Dockerfile';
-		$this->assertFileExists($filename);
+		$this->assertFileContains(
+			'tests/tmp/docker/apache-5.2/Dockerfile',
+			[
+				'FROM php:5.2-apache',
+				'ENV XDEBUG_VERSION 2.2.7',
+			]
+		);
 
-		$content = file_get_contents($filename);
-		$this->assertContains('FROM php:5.2-apache', $content);
-		$this->assertContains('ENV XDEBUG_VERSION 2.2.7', $content);
-
-		$filename = 'tests/tmp/docker/apache-5.2/conf/j25-mysqli.dev';
-		$this->assertFileExists($filename);
-
-		$content = file_get_contents($filename);
-		$this->assertContains('ServerName      j25-mysqli.dev', $content);
-		$this->assertContains('DocumentRoot    /var/www/html/j25-mysqli.dev', $content);
+		$this->assertFileContains(
+			'tests/tmp/docker/apache-5.2/conf/j25-mysqli.dev',
+			[
+				'ServerName      j25-mysqli.dev',
+				'DocumentRoot    /var/www/html/j25-mysqli.dev',
+			]
+		);
 	}
 }

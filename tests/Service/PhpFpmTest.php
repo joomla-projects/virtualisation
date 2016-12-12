@@ -6,13 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Virtualisation;
+namespace Joomla\Tests\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
-class PhpFpmTest extends \PHPUnit_Framework_TestCase
+class PhpFpmTest extends ServiceTestCase
 {
 	/**
 	 * @var  Service  The object under test
@@ -50,11 +50,12 @@ class PhpFpmTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		$filename = 'tests/tmp/docker/php-5.2/Dockerfile';
-		$this->assertFileExists($filename);
-
-		$content = file_get_contents($filename);
-		$this->assertContains('FROM php:5.2-fpm', $content);
-		$this->assertContains('ENV XDEBUG_VERSION 2.2.7', $content);
+		$this->assertFileContains(
+			'tests/tmp/docker/php-5.2/Dockerfile',
+			[
+				'FROM php:5.2-fpm',
+				'ENV XDEBUG_VERSION 2.2.7',
+			]
+		);
 	}
 }

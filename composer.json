@@ -13,6 +13,11 @@
       "Joomla\\Virtualisation\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Joomla\\Tests\\Virtualisation\\": "tests"
+    }
+  },
   "require": {
     "greencape/php-versions": "v1.0.2"
   },

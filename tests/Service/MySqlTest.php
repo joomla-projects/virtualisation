@@ -6,13 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Virtualisation;
+namespace Joomla\Tests\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
-class MySqlTest extends \PHPUnit_Framework_TestCase
+class MySqlTest extends ServiceTestCase
 {
 	/**
 	 * @var  Service  The object under test
@@ -52,10 +52,11 @@ class MySqlTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		$filename = 'tests/tmp/mysql-latest/joomla25.sql';
-		$this->assertFileExists($filename);
-
-		$content = file_get_contents($filename);
-		$this->assertContains('CREATE DATABASE IF NOT EXISTS `joomla25`', $content);
+		$this->assertFileContains(
+			'tests/tmp/mysql-latest/joomla25.sql',
+			[
+				'CREATE DATABASE IF NOT EXISTS `joomla25`',
+			]
+		);
 	}
 }

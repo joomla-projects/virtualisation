@@ -6,13 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Virtualisation;
+namespace Joomla\Tests\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
-class NginxTest extends \PHPUnit_Framework_TestCase
+class NginxTest extends ServiceTestCase
 {
 	/**
 	 * @var  Service  The object under test
@@ -51,11 +51,12 @@ class NginxTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		$filename = 'tests/tmp/docker/nginx-1.9/conf/j3-postgresql.dev/vhost.conf';
-		$this->assertFileExists($filename);
-
-		$content = file_get_contents($filename);
-		$this->assertContains('server_name   j3-postgresql.dev;', $content);
-		$this->assertContains('root          /var/www/html/j3-postgresql.dev;', $content);
+		$this->assertFileContains(
+			'tests/tmp/docker/nginx-1.9/conf/j3-postgresql.dev/vhost.conf',
+			[
+				'server_name   j3-postgresql.dev;',
+				'root          /var/www/html/j3-postgresql.dev;',
+			]
+		);
 	}
 }

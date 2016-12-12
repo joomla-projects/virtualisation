@@ -6,13 +6,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-namespace Joomla\Tests\Virtualisation;
+namespace Joomla\Tests\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
-class PostgreSqlTest extends \PHPUnit_Framework_TestCase
+class PostgreSqlTest extends ServiceTestCase
 {
 	/**
 	 * @var  Service  The object under test
@@ -51,10 +51,11 @@ class PostgreSqlTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->service->prepare();
 
-		$filename = 'tests/tmp/pgsql-latest/joomla3.sql';
-		$this->assertFileExists($filename);
-
-		$content = file_get_contents($filename);
-		$this->assertContains('CREATE DATABASE "joomla3" OWNER "sqladmin"', $content);
+		$this->assertFileContains(
+			'tests/tmp/pgsql-latest/joomla3.sql',
+			[
+				'CREATE DATABASE "joomla3" OWNER "sqladmin"',
+			]
+		);
 	}
 }
