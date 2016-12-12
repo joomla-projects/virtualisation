@@ -1,18 +1,32 @@
-# Joomla! Docker Images
+# Joomla! Virtualisation
 
-This repository contains a set of Docker images used for automated testing.
+The Joomla! Virtualisation tool generates a `docker-compose.yml` file
+based on XML setup definitions used for - but not limited to - automated testing.
+
+This repository also contains a set of `Dockerfile`s. Once they no longer undergo frequent changes, they will be available on DockerHub.
 
 ## Installation
 
+Joomla! Virtualisation is work in progress. Once it has everything to really be usable, it will be available for installation through Composer.
+
 ## Usage
+
+```php
+use Joomla\Virtualisation\DockerComposeGenerator;
+
+$generator = new DockerComposeGenerator('tests/servers');
+$generator->write('tests/tmp/docker-compose.yml');
+```
+
+where '`tests/servers`' is the directory containing the XML setup configurations and '`tests/tmp`' is the 'dockyard' directory defined in the environment (see *Environment / `host`* in the next section).
 
 ### Define Test Environments
 
-Create a new directory servers under your tests directory. It will house the following XML files to describe server configurations.
+Create a new directory `servers` under your `tests` directory. It will house the following XML files to describe server configurations.
 
 #### Databases
 
-The database credentials are expected to be in a file named database.xml in the tests/servers directory.
+The database credentials are expected to be in a file named `database.xml` in the `tests/servers` directory.
 
 ```xml
 <database>
