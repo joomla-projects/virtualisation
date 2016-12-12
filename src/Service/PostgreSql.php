@@ -51,7 +51,8 @@ class PostgreSql extends AbstractService
 	{
 		$template = new Template(__DIR__ . '/template/postgresql/createdb.sql');
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$template->setVariables(
 				[
 					'database.name'   => $config->get('database.name'),

@@ -18,7 +18,7 @@ namespace Joomla\Virtualisation\Service;
  */
 abstract class Map
 {
-	private static $typeMapping  = [
+	private static $typeMapping = [
 		'apache'     => 'apache',
 		'nginx'      => 'nginx',
 		'postgresql' => 'postgresql',
@@ -47,7 +47,8 @@ abstract class Map
 	{
 		$type = strtolower($type);
 
-		if (!isset(self::$typeMapping[$type])) {
+		if (!isset(self::$typeMapping[$type]))
+		{
 			throw new \RuntimeException("Unknown service type $type");
 		}
 

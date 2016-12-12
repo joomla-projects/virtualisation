@@ -9,7 +9,6 @@
 namespace Joomla\Tests\Virtualisation;
 
 use Joomla\Virtualisation\ServerConfig;
-use Joomla\Virtualisation\Service\MySql;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 

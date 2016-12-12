@@ -45,11 +45,13 @@ class ServiceFactory
 	{
 		$service = Map::getClass($server);
 
-		if (empty($version)) {
+		if (empty($version))
+		{
 			$version = 'latest';
 		}
 
-		if (isset($this->cache[$service][$version])) {
+		if (isset($this->cache[$service][$version]))
+		{
 			$this->cache[$service][$version]->addConfiguration($this->config);
 
 			return $this->cache[$service][$version];

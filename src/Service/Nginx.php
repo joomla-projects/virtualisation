@@ -38,7 +38,8 @@ class Nginx extends AbstractService
 			'links'   => [],
 		];
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$version                       = $config->getVersion('php');
 			$this->setup[$name]['links'][] = "php-$version";
 
@@ -61,7 +62,8 @@ class Nginx extends AbstractService
 
 		$template = new Template(__DIR__ . '/template/nginx');
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$domain = $config->get('name') . '.' . $config->get('server.tld');
 			$template->setVariables(
 				[

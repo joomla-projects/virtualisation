@@ -9,8 +9,6 @@
 namespace Joomla\Tests\Virtualisation;
 
 use Joomla\Virtualisation\ServerConfig;
-use Joomla\Virtualisation\Service\MySql;
-use Joomla\Virtualisation\Service\PostgreSql;
 use Joomla\Virtualisation\Service\Service;
 use Joomla\Virtualisation\ServiceFactory;
 
@@ -32,13 +30,13 @@ class PostgreSqlTest extends \PHPUnit_Framework_TestCase
 	{
 		$expected = [
 			'pgsql-latest' => [
-				'image' => 'postgres:latest',
-				'volumes' => [
+				'image'       => 'postgres:latest',
+				'volumes'     => [
 					'tests/tmp/pgsql-latest:/docker-entrypoint-initdb.d',
 				],
 				'environment' => [
-					'POSTGRESQL_DB' => 'joomla_test',
-					'POSTGRESQL_USER' => 'sqladmin',
+					'POSTGRESQL_DB'       => 'joomla_test',
+					'POSTGRESQL_USER'     => 'sqladmin',
 					'POSTGRESQL_PASSWORD' => 'sqladmin',
 				],
 			],

@@ -49,7 +49,8 @@ class Apache extends AbstractService
 			'links'   => [],
 		];
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$driver                        = Map::getType($config->get('database.driver'));
 			$version                       = $config->getVersion('database');
 			$this->setup[$name]['links'][] = "$driver-$version";
@@ -82,7 +83,8 @@ class Apache extends AbstractService
 
 		$vhostTemplate = new Template(__DIR__ . '/template/apache/vhost.conf');
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$domain = $config->get('name') . '.' . $config->get('server.tld');
 			$vhostTemplate->setVariables(
 				[

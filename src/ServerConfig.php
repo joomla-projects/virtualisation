@@ -89,15 +89,18 @@ class ServerConfig
 
 		$xml = simplexml_load_file($filename);
 
-		foreach ($xml->attributes() as $key => $attribute) {
+		foreach ($xml->attributes() as $key => $attribute)
+		{
 			$config[$key] = (string) $attribute;
 		}
 
 		/** @var \SimpleXMLElement $child */
-		foreach ($xml->children() as $child) {
+		foreach ($xml->children() as $child)
+		{
 			$prefix = $child->getName();
 
-			foreach ($child->attributes() as $key => $attribute) {
+			foreach ($child->attributes() as $key => $attribute)
+			{
 				$config["$prefix.$key"] = (string) $attribute;
 			}
 		}
@@ -109,7 +112,8 @@ class ServerConfig
 	{
 		$version = $this->get("$key.version");
 
-		if (empty($version)) {
+		if (empty($version))
+		{
 			$version = 'latest';
 		}
 
@@ -125,7 +129,8 @@ class ServerConfig
 	 */
 	public function get($key)
 	{
-		if (!isset($this->config[$key])) {
+		if (!isset($this->config[$key]))
+		{
 			return null;
 		}
 

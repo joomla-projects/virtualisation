@@ -54,7 +54,8 @@ class MySql extends AbstractService
 	{
 		$template = new Template(__DIR__ . '/template/mysql/createdb.sql');
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$template->setVariables(
 				[
 					'database.name' => $config->get('database.name'),

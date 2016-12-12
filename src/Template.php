@@ -43,12 +43,15 @@ class Template
 
 	private function copy($src, $dst)
 	{
-		if (!file_exists(dirname($src))) {
+		if (!file_exists(dirname($src)))
+		{
 			throw new \RuntimeException("Unable to process $src - does not exist");
 		}
 
-		if (is_file($src)) {
-			if (!file_exists(dirname($dst))) {
+		if (is_file($src))
+		{
+			if (!file_exists(dirname($dst)))
+			{
 				mkdir(dirname($dst), 0777, true);
 			}
 
@@ -57,7 +60,8 @@ class Template
 
 		$len = 0;
 
-		foreach (array_diff(scandir($src), ['.', '..']) as $file) {
+		foreach (array_diff(scandir($src), ['.', '..']) as $file)
+		{
 			$len += $this->copy($src . '/' . $file, $dst . '/' . $file);
 		}
 
@@ -66,7 +70,8 @@ class Template
 
 	private function interpolate($str)
 	{
-		foreach ($this->variables as $variable => $value) {
+		foreach ($this->variables as $variable => $value)
+		{
 			$str = str_replace('${' . $variable . '}', $value, $str);
 		}
 

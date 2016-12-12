@@ -38,7 +38,8 @@ class PhpFpm extends AbstractService
 			'links'   => [],
 		];
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			$driver                        = Map::getType($config->get('database.driver'));
 			$version                       = $config->getVersion('database');
 			$this->setup[$name]['links'][] = "$driver-$version";
@@ -74,7 +75,8 @@ class PhpFpm extends AbstractService
 		);
 		$dockerTemplate->write($dockerPath);
 
-		foreach ($this->configs as $config) {
+		foreach ($this->configs as $config)
+		{
 			/*
 			 * @todo: Prepare initial html content for each configuration in "{$this->dockyard}/docker/php-{$this->version}/html"
 			 */
