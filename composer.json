@@ -19,7 +19,8 @@
     }
   },
   "require": {
-    "greencape/php-versions": "v1.0.2"
+    "greencape/php-versions": "v1.0.2",
+    "symfony/yaml": "^3.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"
