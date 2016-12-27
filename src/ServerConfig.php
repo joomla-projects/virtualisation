@@ -34,7 +34,7 @@ class ServerConfig
 		'feeds.limit'         => "10",
 		'host.dockyard'       => 'shipyard',
 		'joomla.sampleData'   => "data",
-		'joomla.version'      => "3",
+		'joomla.version'      => "latest",
 		'meta.description'    => "Test installation",
 		'meta.keywords'       => "",
 		'meta.showAuthor'     => "1",
@@ -118,6 +118,11 @@ class ServerConfig
 		}
 
 		return $version;
+	}
+
+	public function getDomain()
+	{
+		return $this->get('name') . '.' . $this->get('server.tld');
 	}
 
 	/**

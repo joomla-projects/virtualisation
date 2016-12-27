@@ -43,7 +43,7 @@ class Nginx extends AbstractService
 			$version                       = $config->getVersion('php');
 			$this->setup[$name]['links'][] = "php-$version";
 
-			$domain                          = $config->get('name') . '.' . $config->get('server.tld');
+			$domain                          = $config->getDomain();
 			$this->setup[$name]['volumes'][] = "$this->dockyard/docker/$name/html/$domain:/var/www/html/$domain";
 		}
 
@@ -64,7 +64,7 @@ class Nginx extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
-			$domain = $config->get('name') . '.' . $config->get('server.tld');
+			$domain = $config->getDomain();
 			$template->setVariables(
 				[
 					'domain'   => $domain,

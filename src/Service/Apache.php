@@ -85,7 +85,7 @@ class Apache extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
-			$domain = $config->get('name') . '.' . $config->get('server.tld');
+			$domain = $config->getDomain();
 			$vhostTemplate->setVariables(
 				[
 					'domain' => $domain,

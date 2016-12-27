@@ -29,10 +29,10 @@ class PostgreSqlTest extends ServiceTestCase
 	public function testServiceSetupIsGeneratedAsAnArraySuitableForDockerCompose()
 	{
 		$expected = [
-			'pgsql-latest' => [
+			'postgresql-latest' => [
 				'image'       => 'postgres:latest',
 				'volumes'     => [
-					'tests/tmp/pgsql-latest:/docker-entrypoint-initdb.d',
+					'dockyard/postgresql-latest:/docker-entrypoint-initdb.d',
 				],
 				'environment' => [
 					'POSTGRESQL_DB'       => 'joomla_test',
@@ -52,7 +52,7 @@ class PostgreSqlTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'tests/tmp/pgsql-latest/joomla3.sql',
+			'dockyard/postgresql-latest/joomla3.sql',
 			[
 				'CREATE DATABASE "joomla3" OWNER "sqladmin"',
 			]

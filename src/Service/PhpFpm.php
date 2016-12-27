@@ -44,7 +44,7 @@ class PhpFpm extends AbstractService
 			$version                       = $config->getVersion('database');
 			$this->setup[$name]['links'][] = "$driver-$version";
 
-			$domain                          = $config->get('name') . '.' . $config->get('server.tld');
+			$domain                          = $config->getDomain();
 			$server                          = $config->get('server.type');
 			$version                         = $server == 'apache' ? $config->getVersion('php') : $config->getVersion('server');
 			$this->setup[$name]['volumes'][] = "$this->dockyard/docker/$server-$version/html/$domain:/var/www/html/$domain";

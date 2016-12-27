@@ -31,9 +31,32 @@ class ServiceFactory
 	 */
 	private $cache;
 
+	/**
+	 * @param   ServerConfig $config Configuration
+	 */
+	public function setConfiguration($config)
+	{
+		$this->config = $config;
+	}
+
 	public function getWebserver()
 	{
 		return $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
+	}
+
+	public function getDatabaseServer()
+	{
+		return $this->getService($this->config->get('database.driver'), $this->config->getVersion('database'));
+	}
+
+	public function getPhpServer()
+	{
+		return $this->getService('php', $this->config->getVersion('php'));
+	}
+
+	public function getApplication()
+	{
+		return $this->getService('joomla', $this->config->getVersion('joomla'));
 	}
 
 	/**
@@ -60,23 +83,5 @@ class ServiceFactory
 		$this->cache[$service][$version] = new $service($version, $this->config);
 
 		return $this->cache[$service][$version];
-	}
-
-	public function getDatabaseServer()
-	{
-		return $this->getService($this->config->get('database.driver'), $this->config->getVersion('database'));
-	}
-
-	public function getPhpServer()
-	{
-		return $this->getService('php', $this->config->getVersion('php'));
-	}
-
-	/**
-	 * @param   ServerConfig $config Configuration
-	 */
-	public function setConfiguration($config)
-	{
-		$this->config = $config;
 	}
 }

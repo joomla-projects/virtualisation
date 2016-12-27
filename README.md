@@ -15,10 +15,10 @@ Joomla! Virtualisation is work in progress. Once it has everything to really be 
 use Joomla\Virtualisation\DockerComposeGenerator;
 
 $generator = new DockerComposeGenerator('tests/servers');
-$generator->write('tests/tmp/docker-compose.yml');
+$generator->write('dockyard/docker-compose.yml');
 ```
 
-where '`tests/servers`' is the directory containing the XML setup configurations and '`tests/tmp`' is the 'dockyard' directory defined in the environment (see *Environment / `host`* in the next section).
+where '`tests/servers`' is the directory containing the XML setup configurations and '`dockyard`' is the docker build directory defined in the environment (see Environment / `host` / `dockyard` in the next section).
 
 ### Define Test Environments
 

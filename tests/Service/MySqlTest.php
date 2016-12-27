@@ -32,7 +32,7 @@ class MySqlTest extends ServiceTestCase
 			'mysql-latest' => [
 				'image'       => 'greencape/mariadb:latest',
 				'volumes'     => [
-					'tests/tmp/mysql-latest:/import.d',
+					'dockyard/mysql-latest:/import.d',
 				],
 				'environment' => [
 					'MYSQL_DATABASE'      => 'joomla_test',
@@ -53,7 +53,7 @@ class MySqlTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'tests/tmp/mysql-latest/joomla25.sql',
+			'dockyard/mysql-latest/joomla25.sql',
 			[
 				'CREATE DATABASE IF NOT EXISTS `joomla25`',
 			]

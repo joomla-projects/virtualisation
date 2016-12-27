@@ -28,7 +28,7 @@ class PostgreSql extends AbstractService
 	public function getSetup()
 	{
 		$config             = reset($this->configs);
-		$name               = 'pgsql-' . $this->version;
+		$name               = 'postgresql-' . $this->version;
 		$this->setup[$name] = [
 			'image'       => 'postgres:' . $this->version,
 			'volumes'     => ["{$this->dockyard}/{$name}:/docker-entrypoint-initdb.d"],
@@ -59,7 +59,7 @@ class PostgreSql extends AbstractService
 					'postgresql.user' => $config->get('postgresql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/pgsql-{$this->version}/" . $config->get('database.name') . '.sql');
+			$template->write("{$this->dockyard}/postgresql-{$this->version}/" . $config->get('database.name') . '.sql');
 		}
 	}
 }

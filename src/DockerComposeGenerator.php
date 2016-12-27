@@ -76,6 +76,9 @@ class DockerComposeGenerator
 
 			$server                            = $factory->getPhpServer();
 			$servers[spl_object_hash($server)] = $server;
+
+			$server                            = $factory->getApplication();
+			$servers[spl_object_hash($server)] = $server;
 		}
 
 		return $servers;

@@ -1,5 +1,5 @@
 <environment name="default">
-    <host dockyard="tests/tmp"/>
+    <host dockyard="dockyard"/>
     <joomla version="3" sampleData="data"/>
     <database driver="mysql" name="joomla3" prefix="j3m_"/>
     <server type="nginx" offset="UTC"/>

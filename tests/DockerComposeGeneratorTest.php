@@ -16,14 +16,14 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 	public function testTheGeneratedFileContainsCorrectBuildInstructions()
 	{
 		$generator = new DockerComposeGenerator('tests/fixtures');
-		$generator->write('tests/tmp/docker-compose.yml');
+		$generator->write('dockyard/docker-compose.yml');
 
 		$this->assertFileContains(
-			'tests/tmp/docker-compose.yml',
+			'dockyard/docker-compose.yml',
 			[
-				"build: tests/tmp/docker/apache-5.2",
-				"build: tests/tmp/docker/php-5.2",
-				"build: tests/tmp/docker/php-latest",
+				"build: dockyard/docker/apache-5.2",
+				"build: dockyard/docker/php-5.2",
+				"build: dockyard/docker/php-latest",
 				"image: 'nginx:1.8'",
 				"image: 'nginx:1.9'",
 				"image: 'greencape/mariadb:latest'",

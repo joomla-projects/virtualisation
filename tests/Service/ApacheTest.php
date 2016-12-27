@@ -30,10 +30,10 @@ class ApacheTest extends ServiceTestCase
 	{
 		$expected = [
 			'apache-5.2' => [
-				'build'   => 'tests/tmp/docker/apache-5.2',
+				'build'   => 'dockyard/docker/apache-5.2',
 				'volumes' => [
-					'tests/tmp/docker/apache-5.2/conf:/etc/apache2/sites-enabled',
-					'tests/tmp/docker/apache-5.2/html:/var/www/html',
+					'dockyard/docker/apache-5.2/conf:/etc/apache2/sites-enabled',
+					'dockyard/docker/apache-5.2/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
 				'links'   => [
@@ -52,7 +52,7 @@ class ApacheTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'tests/tmp/docker/apache-5.2/Dockerfile',
+			'dockyard/docker/apache-5.2/Dockerfile',
 			[
 				'FROM php:5.2-apache',
 				'ENV XDEBUG_VERSION 2.2.7',
@@ -60,7 +60,7 @@ class ApacheTest extends ServiceTestCase
 		);
 
 		$this->assertFileContains(
-			'tests/tmp/docker/apache-5.2/conf/j25-mysqli.dev',
+			'dockyard/docker/apache-5.2/conf/j25-mysqli.dev',
 			[
 				'ServerName      j25-mysqli.dev',
 				'DocumentRoot    /var/www/html/j25-mysqli.dev',
