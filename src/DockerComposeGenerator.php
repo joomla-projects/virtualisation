@@ -43,12 +43,24 @@ class DockerComposeGenerator
 	 */
 	protected function getCombinedSetup($servers)
 	{
+		$fixName  = function ($name) {
+			return str_replace(['-', '.'], ['V', 'p'], $name);
+		};
 		$contents = [];
 
 		foreach ($servers as $server)
 		{
 			$server->prepare();
-			$contents = array_merge($contents, $server->getSetup());
+
+			foreach ($server->getSetup() as $name => $setup)
+			{
+				if (isset($setup['links']))
+				{
+					$setup['links'] = array_map($fixName, $setup['links']);
+				}
+
+				$contents[$fixName($name)] = $setup;
+			}
 		}
 
 		return $contents;
