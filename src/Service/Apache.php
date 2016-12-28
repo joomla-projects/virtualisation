@@ -56,6 +56,8 @@ class Apache extends AbstractService
 			$this->setup[$name]['links'][] = "$driver-$version";
 		}
 
+		$this->setup[$name]['links'] = array_unique($this->setup[$name]['links']);
+
 		return $this->setup;
 	}
 
