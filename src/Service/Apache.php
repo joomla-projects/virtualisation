@@ -92,9 +92,6 @@ class Apache extends AbstractService
 				]
 			);
 			$vhostTemplate->write("$dockerPath/conf/$domain");
-			/*
-			 * @todo: Prepare initial html content for each configuration in "{$this->dockyard}/apache-{$this->version}/html"
-			 */
 		}
 	}
 }

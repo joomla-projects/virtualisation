@@ -74,9 +74,6 @@ class Nginx extends AbstractService
 				]
 			);
 			$template->write("$dockerPath/conf/$domain");
-			/*
-			 * @todo: Prepare initial html content for each configuration in "{$this->dockyard}/nginx-{$this->version}/html"
-			 */
 		}
 	}
 }

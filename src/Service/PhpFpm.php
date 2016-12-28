@@ -74,12 +74,5 @@ class PhpFpm extends AbstractService
 			]
 		);
 		$dockerTemplate->write($dockerPath);
-
-		foreach ($this->configs as $config)
-		{
-			/*
-			 * @todo: Prepare initial html content for each configuration in "{$this->dockyard}/docker/php-{$this->version}/html"
-			 */
-		}
 	}
 }
