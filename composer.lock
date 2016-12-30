@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3e004b015a4ef85e36a5c1c1d04f60e5",
-    "content-hash": "d4c94abb5a98ada9222c61d708e58c6a",
+    "hash": "80a3056ead9a4fe86d381af1f45cac71",
+    "content-hash": "e2f350c3eb62e776e31f506649498471",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -192,16 +192,16 @@
         },
         {
             "name": "greencape/php-versions",
-            "version": "v1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GreenCape/php-versions.git",
-                "reference": "fca69c5b9ded890c9ac381356253257ae95ea7a8"
+                "reference": "5de98bb68d804da3be15e9b7e8de5c4b6a95fd9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GreenCape/php-versions/zipball/fca69c5b9ded890c9ac381356253257ae95ea7a8",
-                "reference": "fca69c5b9ded890c9ac381356253257ae95ea7a8",
+                "url": "https://api.github.com/repos/GreenCape/php-versions/zipball/5de98bb68d804da3be15e9b7e8de5c4b6a95fd9a",
+                "reference": "5de98bb68d804da3be15e9b7e8de5c4b6a95fd9a",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +226,7 @@
             ],
             "description": "A utility class to provide a list of all PHP versions and their matching xDebug version.",
             "homepage": "https://github.com/GreenCape/php-versions",
-            "time": "2016-12-12 12:56:41"
+            "time": "2016-12-29 15:23:00"
         },
         {
             "name": "psr/log",

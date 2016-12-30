@@ -19,7 +19,7 @@
     }
   },
   "require": {
-    "greencape/php-versions": "v1.0.2",
+    "greencape/php-versions": "^1.1",
     "symfony/yaml": "^3.2",
     "greencape/joomla-cli": "^0.1.0",
     "alchemy/zippy": "^0.4.4"

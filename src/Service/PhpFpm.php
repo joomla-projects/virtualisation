@@ -29,7 +29,7 @@ class PhpFpm extends AbstractService
 	public function getSetup()
 	{
 		$name               = 'php-' . $this->version;
-		$dockerPath         = $this->dockyard . '/docker/' . $name;
+		$dockerPath         = 'docker/' . $name;
 		$this->setup[$name] = [
 			'build'   => $dockerPath,
 			'volumes' => [
@@ -47,7 +47,7 @@ class PhpFpm extends AbstractService
 			$domain                          = $config->getDomain();
 			$server                          = $config->get('server.type');
 			$version                         = $server == 'apache' ? $config->getVersion('php') : $config->getVersion('server');
-			$this->setup[$name]['volumes'][] = "$this->dockyard/docker/$server-$version/html/$domain:/var/www/html/$domain";
+			$this->setup[$name]['volumes'][] = "docker/$server-$version/html/$domain:/var/www/html/$domain";
 		}
 
 		$this->setup[$name]['links'] = array_unique($this->setup[$name]['links']);

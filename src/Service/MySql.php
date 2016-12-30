@@ -32,7 +32,7 @@ class MySql extends AbstractService
 		$this->setup[$name] = [
 			'image'       => 'greencape/mariadb:' . $this->version,
 			'volumes'     => [
-				"{$this->dockyard}/{$name}:/import.d",
+				"{$name}:/import.d",
 			],
 			'environment' => [
 				'MYSQL_DATABASE'      => $config->get('mysql.name'),

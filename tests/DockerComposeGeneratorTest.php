@@ -21,9 +21,9 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 		$this->assertFileContains(
 			'dockyard/docker-compose.yml',
 			[
-				"build: dockyard/docker/apache-5.2",
-				"build: dockyard/docker/php-5.2",
-				"build: dockyard/docker/php-latest",
+				"build: docker/apache-5.2",
+				"build: docker/php-5.2",
+				"build: docker/php-latest",
 				"image: 'nginx:1.8'",
 				"image: 'nginx:1.9'",
 				"image: 'greencape/mariadb:latest'",

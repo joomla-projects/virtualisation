@@ -19,6 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DockerComposeGenerator
 {
+	private $servers = [];
 	/**
 	 * @var  string
 	 */
@@ -43,8 +44,9 @@ class DockerComposeGenerator
 	 */
 	protected function getCombinedSetup($servers)
 	{
-		$fixName  = function ($name) {
-			return str_replace(['-', '.'], ['V', 'p'], $name);
+		$fixName  = function ($name)
+		{
+			return strtolower(str_replace(['-', '.'], ['v', 'p'], $name));
 		};
 		$contents = [];
 
@@ -63,7 +65,7 @@ class DockerComposeGenerator
 			}
 		}
 
-		return $contents;
+		return array_filter($contents);
 	}
 
 	/**
@@ -73,26 +75,32 @@ class DockerComposeGenerator
 	 */
 	protected function getServices($xmlFiles)
 	{
-		$servers = [];
-		$factory = new ServiceFactory();
+		$this->servers = [];
+		$factory       = new ServiceFactory();
 
 		foreach ($xmlFiles as $file)
 		{
 			$factory->setConfiguration(new ServerConfig($this->path . '/' . $file));
 
-			$server                            = $factory->getWebserver();
-			$servers[spl_object_hash($server)] = $server;
-
-			$server                            = $factory->getDatabaseServer();
-			$servers[spl_object_hash($server)] = $server;
-
-			$server                            = $factory->getPhpServer();
-			$servers[spl_object_hash($server)] = $server;
-
-			$server                            = $factory->getApplication();
-			$servers[spl_object_hash($server)] = $server;
+			$this->registerServer($factory->getWebserver());
+			$this->registerServer($factory->getDatabaseServer());
+			$this->registerServer($factory->getPhpServer());
+			$this->registerServer($factory->getApplication());
 		}
 
-		return $servers;
+		return $this->servers;
+	}
+
+	/**
+	 * @param $server
+	 */
+	protected function registerServer($server)
+	{
+		if (empty($server))
+		{
+			return;
+		}
+
+		$this->servers[spl_object_hash($server)] = $server;
 	}
 }
