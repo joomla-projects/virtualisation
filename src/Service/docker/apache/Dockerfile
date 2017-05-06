@@ -126,18 +126,22 @@ RUN set -xe; \
 	fi; \
 	\
 	if [ -n "$PHP_ASC_URL" ]; then \
-		wget -O ${php.filename}.asc "$PHP_ASC_URL"; \
-		export GNUPGHOME="$(mktemp -d)"; \
-		for key in $GPG_KEYS; do \
-			gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-		done; \
-		gpg --batch --verify ${php.filename}.asc ${php.filename}; \
-		rm -r "$GNUPGHOME"; \
+		if [ -n "$GPG_KEYS" ]; then \
+			wget -O ${php.filename}.asc "$PHP_ASC_URL"; \
+			export GNUPGHOME="$(mktemp -d)"; \
+			for key in $GPG_KEYS; do \
+				gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+			done; \
+			gpg --batch --verify ${php.filename}.asc ${php.filename}; \
+			rm -r "$GNUPGHOME"; \
+		fi; \
 	fi; \
 	\
 	apt-get purge -y --auto-remove $fetchDeps
 
-COPY docker-php-source /usr/local/bin/
+COPY docker-php-source docker-php-patch /usr/local/bin/
+COPY patches/*.patch /usr/src/patches/
+RUN chmod +x /usr/local/bin/docker-php-*
 
 RUN set -xe \
 	&& buildDeps=" \
@@ -150,6 +154,7 @@ RUN set -xe \
 		libpqxx-dev \
 		ruby-dev \
 		build-essential \
+		lemon \
 	" \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
@@ -157,6 +162,7 @@ RUN set -xe \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
+	&& docker-php-patch ${php.patches} \
 	&& cd /usr/src/php \
 	&& ./configure \
 		--with-config-file-path="$PHP_INI_DIR" \
@@ -182,6 +188,7 @@ RUN set -xe \
 	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
 	&& docker-php-source delete \
+	&& rm -rf /usr/src/patches \
 	\
 	&& curl -SL "http://www.xdebug.org/files/xdebug-$XDEBUG_VERSION.tgz" -o xdebug.tgz \
 	&& echo $XDEBUG_HASH xdebug.tgz | ${xdebug.hashtype}sum -c - \
@@ -193,11 +200,12 @@ RUN set -xe \
 	&& ./configure \
 	&& make -j"$(nproc)" \
 	&& make install \
-	&& make clean
+	&& make clean \
 	\
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-php-*
 
 COPY php.ini /usr/local/etc/php/
 COPY conf.d/* /usr/local/etc/php/conf.d/

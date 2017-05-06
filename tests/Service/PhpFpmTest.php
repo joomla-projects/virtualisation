@@ -30,10 +30,10 @@ class PhpFpmTest extends ServiceTestCase
 	{
 		$expected = [
 			'php-5.2' => [
-				'build'   => 'dockyard/docker/php-5.2',
+				'build'   => 'docker/php-5.2',
 				'volumes' => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					'dockyard/docker/apache-5.2/html/j25-mysqli.dev:/var/www/html/j25-mysqli.dev',
+					'docker/apache-5.2/html/j25-mysqli.dev:/var/www/html/j25-mysqli.dev',
 				],
 				'links'   => [
 					'mysql-latest',
@@ -53,7 +53,7 @@ class PhpFpmTest extends ServiceTestCase
 		$this->assertFileContains(
 			'dockyard/docker/php-5.2/Dockerfile',
 			[
-				'FROM php:5.2-fpm',
+				'ENV PHP_VERSION 5.2.17',
 				'ENV XDEBUG_VERSION 2.2.7',
 			]
 		);

@@ -18,10 +18,8 @@ use Joomla\Virtualisation\Template;
  * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
-class Apache extends AbstractService
+class Apache extends PhpBase
 {
-	protected $setup = [];
-
 	public function __construct($version, ServerConfig $config)
 	{
 		parent::__construct($version, $config);
@@ -68,48 +66,9 @@ class Apache extends AbstractService
 	 */
 	public function prepare()
 	{
-		$name       = 'apache-' . $this->version;
-		$dockerPath = $this->dockyard . '/docker/' . $name;
+		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version;
 
-		$phpVersions = new PhpVersions();
-		$phpInfo     = $phpVersions->getInfo($this->version);
-
-		$php = $phpVersions->getSourceInfo($phpInfo['version']);
-
-		if ($phpInfo['museum'])
-		{
-			$major     = intval($phpInfo['version']);
-			$phpUrl    = "http://museum.php.net/php{$major}/{$php['filename']}";
-			$phpAscUrl = '';
-		}
-		else
-		{
-			$phpUrl    = "https://secure.php.net/get/{$php['filename']}/from/this/mirror";
-			$phpAscUrl = "https://secure.php.net/get/{$php['filename']}.asc/from/this/mirror";
-		}
-
-		$gpgKeys = [];
-		foreach ($phpInfo['gpg'] as $key)
-		{
-			$gpgKeys[] = str_replace(' ', '', $key['pub']);
-		}
-
-		$dockerTemplate = new Template(__DIR__ . '/docker/apache');
-		$dockerTemplate->setVariables(
-			[
-				'php.filename'    => $php['filename'],
-				'php.version'     => $phpInfo['version'],
-				'php.url'         => $phpUrl,
-				'php.asc.url'     => $phpAscUrl,
-				'php.md5'         => $php['md5'],
-				'php.sha256'      => $php['sha256'],
-				'gpg.keys'        => implode(' ', $gpgKeys),
-				'xdebug.version'  => $phpInfo['xdebug']['version'],
-				'xdebug.hashtype' => 'sha1',
-				'xdebug.hash'     => $phpInfo['xdebug']['sha1'],
-			]
-		);
-		$dockerTemplate->write($dockerPath);
+		$this->preparePhp($dockerPath);
 
 		$vhostTemplate = new Template(__DIR__ . '/template/apache/vhost.conf');
 

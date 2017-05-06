@@ -32,7 +32,7 @@ class PostgreSqlTest extends ServiceTestCase
 			'postgresql-latest' => [
 				'image'       => 'postgres:latest',
 				'volumes'     => [
-					'dockyard/postgresql-latest:/docker-entrypoint-initdb.d',
+					'postgresql-latest:/docker-entrypoint-initdb.d',
 				],
 				'environment' => [
 					'POSTGRESQL_DB'       => 'joomla_test',

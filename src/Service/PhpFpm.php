@@ -17,10 +17,8 @@ use Joomla\Virtualisation\Template;
  * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
-class PhpFpm extends AbstractService
+class PhpFpm extends PhpBase
 {
-	protected $setup = [];
-
 	/**
 	 * Get the setup (suitable for docker-compose files)
 	 *
@@ -62,19 +60,8 @@ class PhpFpm extends AbstractService
 	 */
 	public function prepare()
 	{
-		$name       = 'php-' . $this->version;
-		$dockerPath = $this->dockyard . '/docker/' . $name;
+		$dockerPath = $this->dockyard . '/docker/php-' . $this->version;
 
-		$phpInfo        = (new PhpVersions())->getInfo($this->version);
-		$dockerTemplate = new Template(__DIR__ . '/docker/php-fpm');
-		$dockerTemplate->setVariables(
-			[
-				'php.version'     => $this->version,
-				'xdebug.version'  => $phpInfo['xdebug']['version'],
-				'xdebug.hashtype' => 'sha1',
-				'xdebug.hash'     => $phpInfo['xdebug']['sha1'],
-			]
-		);
-		$dockerTemplate->write($dockerPath);
+		$this->preparePhp($dockerPath);
 	}
 }

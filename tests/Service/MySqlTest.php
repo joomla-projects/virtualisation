@@ -32,7 +32,7 @@ class MySqlTest extends ServiceTestCase
 			'mysql-latest' => [
 				'image'       => 'greencape/mariadb:latest',
 				'volumes'     => [
-					'dockyard/mysql-latest:/import.d',
+					'mysql-latest:/import.d',
 				],
 				'environment' => [
 					'MYSQL_DATABASE'      => 'joomla_test',

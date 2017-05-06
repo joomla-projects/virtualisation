@@ -30,10 +30,10 @@ class ApacheTest extends ServiceTestCase
 	{
 		$expected = [
 			'apache-5.2' => [
-				'build'   => 'dockyard/docker/apache-5.2',
+				'build'   => 'docker/apache-5.2',
 				'volumes' => [
-					'dockyard/docker/apache-5.2/conf:/etc/apache2/sites-enabled',
-					'dockyard/docker/apache-5.2/html:/var/www/html',
+					'docker/apache-5.2/conf:/etc/apache2/sites-enabled',
+					'docker/apache-5.2/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
 				'links'   => [
@@ -54,7 +54,7 @@ class ApacheTest extends ServiceTestCase
 		$this->assertFileContains(
 			'dockyard/docker/apache-5.2/Dockerfile',
 			[
-				'FROM php:5.2-apache',
+				'ENV PHP_VERSION 5.2.17',
 				'ENV XDEBUG_VERSION 2.2.7',
 			]
 		);
