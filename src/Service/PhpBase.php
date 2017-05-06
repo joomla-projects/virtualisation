@@ -54,11 +54,11 @@ abstract class PhpBase extends AbstractService
 				'php.asc.url'     => $phpAscUrl,
 				'php.md5'         => $php['md5'],
 				'php.sha256'      => $php['sha256'],
-				#'php.patches'     => implode(' ', $this->findPatches($dockerPath, $phpInfo['version'])),
-				'gpg.keys'        => $this->getGpgKeys($phpInfo['gpg']),
+				'php.patches'     => '', // implode(' ', $this->findPatches($dockerPath, $phpInfo['version'])),
+				'gpg.keys'        => '""', // $this->getGpgKeys($phpInfo['gpg']),
 				'xdebug.version'  => $phpInfo['xdebug']['version'],
-				'xdebug.hashtype' => 'sha1',
-				'xdebug.hash'     => $phpInfo['xdebug']['sha1'],
+				'xdebug.hashtype' => 'sha256',
+				'xdebug.hash'     => $phpInfo['xdebug']['sha256'],
 			]
 		);
 		$dockerTemplate->write($dockerPath);

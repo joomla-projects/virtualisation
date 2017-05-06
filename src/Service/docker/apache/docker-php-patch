@@ -5,14 +5,17 @@ src_dir=/usr/src/php
 patch_dir=/usr/src/patches
 
 usage() {
-	echo "usage: $0 [PATCH [PATCH ...]]"
+	echo "Usage: $0 [PATCH [PATCH ...]]"
 	echo
 	echo "Apply patches to the PHP source."
 	echo
 }
 
 case "$1" in
-	--help|-h|"")
+	"")
+		;;
+
+	--help|-h)
 		usage
 		exit 1
 		;;

@@ -29,11 +29,11 @@ class ApacheTest extends ServiceTestCase
 	public function testServiceSetupIsGeneratedAsAnArraySuitableForDockerCompose()
 	{
 		$expected = [
-			'apache-5.2' => [
-				'build'   => 'docker/apache-5.2',
+			'apache-5.4' => [
+				'build'   => 'docker/apache-5.4',
 				'volumes' => [
-					'docker/apache-5.2/conf:/etc/apache2/sites-enabled',
-					'docker/apache-5.2/html:/var/www/html',
+					'docker/apache-5.4/conf:/etc/apache2/sites-enabled',
+					'docker/apache-5.4/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
 				'links'   => [
@@ -52,15 +52,15 @@ class ApacheTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/docker/apache-5.2/Dockerfile',
+			'dockyard/docker/apache-5.4/Dockerfile',
 			[
-				'ENV PHP_VERSION 5.2.17',
-				'ENV XDEBUG_VERSION 2.2.7',
-			]
+                'ENV PHP_VERSION 5.4.45',
+                'ENV XDEBUG_VERSION 2.4.1',
+            ]
 		);
 
 		$this->assertFileContains(
-			'dockyard/docker/apache-5.2/conf/j25-mysqli.dev',
+			'dockyard/docker/apache-5.4/conf/j25-mysqli.dev',
 			[
 				'ServerName      j25-mysqli.dev',
 				'DocumentRoot    /var/www/html/j25-mysqli.dev',

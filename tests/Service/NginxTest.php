@@ -34,7 +34,7 @@ class NginxTest extends ServiceTestCase
 				'volumes' => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 					'docker/nginx-1.9/conf:/etc/nginx/conf.d',
-					'docker/nginx-1.9/html/j3-postgresql.dev:/var/www/html/j3-postgresql.dev',
+					'docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
 				],
 				'links'   => [
 					'php-latest',
