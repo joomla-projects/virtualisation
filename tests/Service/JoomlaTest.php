@@ -40,7 +40,7 @@ class JoomlaTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/docker/apache-5.2/html/j25-mysqli.dev/libraries/cms/version/version.php',
+			'dockyard/docker/apache-5.4/html/j25-mysqli.dev/libraries/cms/version/version.php',
 			[
 				'public $RELEASE = \'2.5\';',
 				'public $DEV_LEVEL = \'28\';',
@@ -80,7 +80,7 @@ class JoomlaTest extends ServiceTestCase
 	public function testConfigurationFileIsGenerated()
 	{
 		$this->assertFileContains(
-			'dockyard/docker/apache-5.2/html/j25-mysqli.dev/configuration.php',
+			'dockyard/docker/apache-5.4/html/j25-mysqli.dev/configuration.php',
 			[
 				'public $smtphost = \'mail:1025\';',
 			]

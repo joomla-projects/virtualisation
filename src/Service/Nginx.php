@@ -30,12 +30,15 @@ class Nginx extends AbstractService
 		$name               = 'nginx-' . $this->version;
 		$dockerPath         = 'docker/' . $name;
 		$this->setup[$name] = [
-			'image'   => 'nginx:' . $this->version,
-			'volumes' => [
+			'image'       => 'nginx:' . $this->version,
+			'volumes'     => [
 				getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				"$dockerPath/conf:/etc/nginx/conf.d",
 			],
-			'links'   => [],
+			'links'       => [],
+			'environment' => [
+				'VIRTUAL_HOST' => [],
+			],
 		];
 
 		foreach ($this->configs as $config)
@@ -43,9 +46,12 @@ class Nginx extends AbstractService
 			$version                       = $config->getVersion('php');
 			$this->setup[$name]['links'][] = "php-$version";
 
-			$domain                          = $config->getDomain();
-			$this->setup[$name]['volumes'][] = "docker/$name/html/$domain:/var/www/html/$domain";
+			$domain                                              = $config->getDomain();
+			$this->setup[$name]['volumes'][]                     = "docker/$name/html/$domain:/var/www/html/$domain";
+			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $domain;
 		}
+
+		$this->setup[$name]['environment']['VIRTUAL_HOST'] = implode(',', $this->setup[$name]['environment']['VIRTUAL_HOST']);
 
 		return $this->setup;
 	}

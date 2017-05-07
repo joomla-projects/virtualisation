@@ -33,9 +33,9 @@ class PostgreSql extends AbstractService
 			'image'       => 'postgres:' . $this->version,
 			'volumes'     => ["{$name}:/docker-entrypoint-initdb.d"],
 			'environment' => [
-				'POSTGRESQL_DB'       => $config->get('postgresql.name'),
-				'POSTGRESQL_USER'     => $config->get('postgresql.user'),
-				'POSTGRESQL_PASSWORD' => $config->get('postgresql.password'),
+				'POSTGRES_DB'       => $config->get('postgresql.name'),
+				'POSTGRES_USER'     => $config->get('postgresql.user'),
+				'POSTGRES_PASSWORD' => $config->get('postgresql.password'),
 			],
 		];
 

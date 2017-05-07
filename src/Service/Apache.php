@@ -8,7 +8,6 @@
 
 namespace Joomla\Virtualisation\Service;
 
-use Greencape\PhpVersions;
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Template;
 
@@ -18,10 +17,8 @@ use Joomla\Virtualisation\Template;
  * @package  Joomla\Virtualisation
  * @since    __DEPLOY_VERSION__
  */
-class Apache extends AbstractService
+class Apache extends PhpBase
 {
-	protected $setup = [];
-
 	public function __construct($version, ServerConfig $config)
 	{
 		parent::__construct($version, $config);
@@ -40,23 +37,28 @@ class Apache extends AbstractService
 		$name               = 'apache-' . $this->version;
 		$dockerPath         = 'docker/' . $name;
 		$this->setup[$name] = [
-			'build'   => $dockerPath,
-			'volumes' => [
+			'build'       => $dockerPath,
+			'volumes'     => [
 				"$dockerPath/conf:/etc/apache2/sites-enabled",
 				"$dockerPath/html:/var/www/html",
 				getcwd() . '/vendor:/usr/local/lib/php/vendor',
 			],
-			'links'   => [],
+			'links'       => [],
+			'environment' => [
+				'VIRTUAL_HOST' => [],
+			],
 		];
 
 		foreach ($this->configs as $config)
 		{
-			$driver                        = Map::getType($config->get('database.driver'));
-			$version                       = $config->getVersion('database');
-			$this->setup[$name]['links'][] = "$driver-$version";
+			$driver                                              = Map::getType($config->get('database.driver'));
+			$version                                             = $config->getVersion('database');
+			$this->setup[$name]['links'][]                       = "$driver-$version";
+			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $config->getDomain();
 		}
 
-		$this->setup[$name]['links'] = array_unique($this->setup[$name]['links']);
+		$this->setup[$name]['links']                       = array_unique($this->setup[$name]['links']);
+		$this->setup[$name]['environment']['VIRTUAL_HOST'] = implode(',', $this->setup[$name]['environment']['VIRTUAL_HOST']);
 
 		return $this->setup;
 	}
@@ -68,49 +70,17 @@ class Apache extends AbstractService
 	 */
 	public function prepare()
 	{
-		$name       = 'apache-' . $this->version;
-		$dockerPath = $this->dockyard . '/docker/' . $name;
+		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version;
 
-		$phpVersions = new PhpVersions();
-		$phpInfo     = $phpVersions->getInfo($this->version);
+		$this->createDockerfile($dockerPath, __DIR__ . '/docker/apache');
+		$this->createVhosts($dockerPath);
+	}
 
-		$php = $phpVersions->getSourceInfo($phpInfo['version']);
-
-		if ($phpInfo['museum'])
-		{
-			$major     = intval($phpInfo['version']);
-			$phpUrl    = "http://museum.php.net/php{$major}/{$php['filename']}";
-			$phpAscUrl = '';
-		}
-		else
-		{
-			$phpUrl    = "https://secure.php.net/get/{$php['filename']}/from/this/mirror";
-			$phpAscUrl = "https://secure.php.net/get/{$php['filename']}.asc/from/this/mirror";
-		}
-
-		$gpgKeys = [];
-		foreach ($phpInfo['gpg'] as $key)
-		{
-			$gpgKeys[] = str_replace(' ', '', $key['pub']);
-		}
-
-		$dockerTemplate = new Template(__DIR__ . '/docker/apache');
-		$dockerTemplate->setVariables(
-			[
-				'php.filename'    => $php['filename'],
-				'php.version'     => $phpInfo['version'],
-				'php.url'         => $phpUrl,
-				'php.asc.url'     => $phpAscUrl,
-				'php.md5'         => $php['md5'],
-				'php.sha256'      => $php['sha256'],
-				'gpg.keys'        => implode(' ', $gpgKeys),
-				'xdebug.version'  => $phpInfo['xdebug']['version'],
-				'xdebug.hashtype' => 'sha1',
-				'xdebug.hash'     => $phpInfo['xdebug']['sha1'],
-			]
-		);
-		$dockerTemplate->write($dockerPath);
-
+	/**
+	 * @param $dockerPath
+	 */
+	protected function createVhosts($dockerPath)
+	{
 		$vhostTemplate = new Template(__DIR__ . '/template/apache/vhost.conf');
 
 		foreach ($this->configs as $config)
@@ -124,4 +94,5 @@ class Apache extends AbstractService
 			$vhostTemplate->write("$dockerPath/conf/$domain");
 		}
 	}
+
 }

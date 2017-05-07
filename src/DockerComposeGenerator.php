@@ -8,6 +8,7 @@
 
 namespace Joomla\Virtualisation;
 
+use Greencape\PhpVersions;
 use Joomla\Virtualisation\Service\Service;
 use Symfony\Component\Yaml\Yaml;
 
@@ -19,11 +20,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DockerComposeGenerator
 {
-	private $servers = [];
 	/**
 	 * @var  string
 	 */
 	protected $path;
+	private $servers = [];
 
 	public function __construct($path)
 	{
@@ -33,8 +34,9 @@ class DockerComposeGenerator
 	public function write($filename)
 	{
 		$xmlFiles = array_diff(scandir($this->path), ['.', '..', 'database.xml', 'default.xml']);
+		$services = $this->getCombinedSetup($this->getServices($xmlFiles));
 
-		return file_put_contents($filename, Yaml::dump($this->getCombinedSetup($this->getServices($xmlFiles)), 4, 2));
+		return file_put_contents($filename, Yaml::dump($services, 4, 2));
 	}
 
 	/**
@@ -82,6 +84,7 @@ class DockerComposeGenerator
 		{
 			$factory->setConfiguration(new ServerConfig($this->path . '/' . $file));
 
+			$this->registerServer($factory->getProxyServer());
 			$this->registerServer($factory->getWebserver());
 			$this->registerServer($factory->getDatabaseServer());
 			$this->registerServer($factory->getPhpServer());
@@ -102,5 +105,10 @@ class DockerComposeGenerator
 		}
 
 		$this->servers[spl_object_hash($server)] = $server;
+	}
+
+	private function refreshVersionCache()
+	{
+		$versions = new PhpVersions(null, PhpVersions::VERBOSITY_NORMAL | PhpVersions::CACHE_DISABLED);
 	}
 }

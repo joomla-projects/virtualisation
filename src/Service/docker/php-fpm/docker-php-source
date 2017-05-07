@@ -4,7 +4,7 @@ set -e
 dir=/usr/src/php
 
 usage() {
-	echo "usage: $0 COMMAND"
+	echo "Usage: $0 COMMAND"
 	echo
 	echo "Manage php source tarball lifecycle."
 	echo
@@ -16,9 +16,10 @@ usage() {
 
 case "$1" in
 	extract)
-		archive=`ls /usr/src/php-*.tar.*`
 		mkdir -p "$dir"
 		if [ ! -f "$dir/.docker-extracted" ]; then
+			rm -f /usr/src/php-*.asc
+			archive=`ls /usr/src/php-*.tar.*`
 			tar -axf "$archive" -C "$dir" --strip-components=1
 			touch "$dir/.docker-extracted"
 		fi

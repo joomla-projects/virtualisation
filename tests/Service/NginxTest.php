@@ -30,14 +30,17 @@ class NginxTest extends ServiceTestCase
 	{
 		$expected = [
 			'nginx-1.9' => [
-				'image'   => 'nginx:1.9',
-				'volumes' => [
+				'image'       => 'nginx:1.9',
+				'volumes'     => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					'dockyard/docker/nginx-1.9/conf:/etc/nginx/conf.d',
-					'dockyard/docker/nginx-1.9/html/j3-postgresql.dev:/var/www/html/j3-postgresql.dev',
+					'docker/nginx-1.9/conf:/etc/nginx/conf.d',
+					'docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
 				],
-				'links'   => [
+				'links'       => [
 					'php-latest',
+				],
+				'environment' => [
+					'VIRTUAL_HOST' => 'j3-postgresql-19.dev',
 				],
 			],
 		];
