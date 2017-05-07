@@ -181,3 +181,48 @@ Latest Joomla!3 on Nginx with PostgreSQL, no sample data
 
 ## Contribute
 
+PRs are welcome.
+If you encounter any bug or issues, please use the [issue tracker](https://github.com/joomla-projects/virtualisation/issues).
+
+To contribute code or bugfixes, clone this repository, add your changes and make a pull request against the `develop` branch.
+
+### Running Tests
+
+On the command line, enter
+
+    $ phpunit
+
+within the project's root directory. The tests create a complete setup in the `dockyard` directory, which can be used
+to explore the possibilities.
+
+### Convenience Commands
+
+Some `composer` scripts are provided to make life a bit easier. They are run from the project's root directory, and frees you from having to change into the `dockyard` directory as required by `docker-compose`.
+
+#### `test`
+
+    $ composer test
+    
+PHPUnit is run with the `--testdox` option.
+
+#### `build`
+
+    $ composer build
+    
+Runs the tests and builds all docker images.
+
+#### `start`
+
+    $composer start
+    
+Starts the containers in the background after running the tests.
+
+#### `stop`
+
+    $ composer stop
+    
+Stops all running containers.
+
+#### `clean`
+
+Removes the containers. If necessary, the containers are stopped for that.

@@ -26,5 +26,29 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"
+  },
+  "scripts": {
+    "test": [
+      "phpunit --testdox"
+    ],
+    "build": [
+      "@test",
+      "cd dockyard && docker-compose build",
+      "cd .."
+    ],
+    "start": [
+      "@test",
+      "cd dockyard && docker-compose up -d",
+      "cd .."
+    ],
+    "stop": [
+      "cd dockyard && docker-compose stop",
+      "cd .."
+    ],
+    "clean": [
+      "@stop",
+      "cd dockyard && docker-compose rm --force",
+      "cd .."
+    ]
   }
 }
