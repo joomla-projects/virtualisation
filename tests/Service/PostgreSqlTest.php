@@ -35,9 +35,9 @@ class PostgreSqlTest extends ServiceTestCase
 					'postgresql-latest:/docker-entrypoint-initdb.d',
 				],
 				'environment' => [
-					'POSTGRESQL_DB'       => 'joomla_test',
-					'POSTGRESQL_USER'     => 'sqladmin',
-					'POSTGRESQL_PASSWORD' => 'sqladmin',
+					'POSTGRES_DB'       => 'joomla_test',
+					'POSTGRES_USER'     => 'sqladmin',
+					'POSTGRES_PASSWORD' => 'sqladmin',
 				],
 			],
 		];

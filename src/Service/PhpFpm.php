@@ -8,9 +8,6 @@
 
 namespace Joomla\Virtualisation\Service;
 
-use Greencape\PhpVersions;
-use Joomla\Virtualisation\Template;
-
 /**
  * Class PhpFpm
  *
@@ -62,6 +59,6 @@ class PhpFpm extends PhpBase
 	{
 		$dockerPath = $this->dockyard . '/docker/php-' . $this->version;
 
-		$this->preparePhp($dockerPath);
+		$this->createDockerfile($dockerPath, __DIR__ . '/docker/php-fpm');
 	}
 }

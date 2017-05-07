@@ -29,6 +29,7 @@ abstract class Map
 		'pdomysql'   => 'mysql',
 		'php'        => 'php',
 		'joomla'     => 'joomla',
+		'proxy'      => 'proxy',
 	];
 
 	private static $classMapping = [
@@ -38,6 +39,7 @@ abstract class Map
 		'mysql'      => '\\Joomla\\Virtualisation\\Service\\MySql',
 		'php'        => '\\Joomla\\Virtualisation\\Service\\PhpFpm',
 		'joomla'     => '\\Joomla\\Virtualisation\\Service\\Joomla',
+		'proxy'      => '\\Joomla\\Virtualisation\\Service\\Proxy',
 	];
 
 	public static function getClass($type)

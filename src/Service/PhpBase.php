@@ -22,11 +22,10 @@ abstract class PhpBase extends AbstractService
 	protected $setup = [];
 
 	/**
-	 * Prepare the dockyard
-	 *
-	 * @return  void
+	 * @param $dockerPath
+	 * @param $template
 	 */
-	protected function preparePhp($dockerPath)
+	protected function createDockerfile($dockerPath, $template)
 	{
 		$phpVersions = new PhpVersions();
 		$phpInfo     = $phpVersions->getInfo($this->version);
@@ -45,7 +44,7 @@ abstract class PhpBase extends AbstractService
 			$phpAscUrl = "https://secure.php.net/get/{$php['filename']}.asc/from/this/mirror";
 		}
 
-		$dockerTemplate = new Template(__DIR__ . '/docker/apache');
+		$dockerTemplate = new Template($template);
 		$dockerTemplate->setVariables(
 			[
 				'php.filename'    => $php['filename'],
@@ -62,41 +61,6 @@ abstract class PhpBase extends AbstractService
 			]
 		);
 		$dockerTemplate->write($dockerPath);
-
-		$vhostTemplate = new Template(__DIR__ . '/template/apache/vhost.conf');
-
-		foreach ($this->configs as $config)
-		{
-			$domain = $config->getDomain();
-			$vhostTemplate->setVariables(
-				[
-					'domain' => $domain,
-				]
-			);
-			$vhostTemplate->write("$dockerPath/conf/$domain");
-		}
-	}
-
-	/**
-	 * @param $gpg
-	 *
-	 * @return array
-	 */
-	private function getGpgKeys($gpg)
-	{
-		$gpgKeys = [];
-
-		foreach ($gpg as $key)
-		{
-			$gpgKeys[] = str_replace(' ', '', $key['pub']);
-		}
-
-		if (empty($gpgKeys))
-		{
-			$gpgKeys = ['""'];
-		}
-
-		return implode(' ', $gpgKeys);
 	}
 
 	protected function findPatches($path, $version)
@@ -124,5 +88,27 @@ abstract class PhpBase extends AbstractService
 		}
 
 		return $files;
+	}
+
+	/**
+	 * @param $gpg
+	 *
+	 * @return array
+	 */
+	private function getGpgKeys($gpg)
+	{
+		$gpgKeys = [];
+
+		foreach ($gpg as $key)
+		{
+			$gpgKeys[] = str_replace(' ', '', $key['pub']);
+		}
+
+		if (empty($gpgKeys))
+		{
+			$gpgKeys = ['""'];
+		}
+
+		return implode(' ', $gpgKeys);
 	}
 }

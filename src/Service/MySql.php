@@ -30,9 +30,9 @@ class MySql extends AbstractService
 		$config             = reset($this->configs);
 		$name               = 'mysql-' . $this->version;
 		$this->setup[$name] = [
-			'image'       => 'greencape/mariadb:' . $this->version,
+			'image'       => 'mariadb:' . $this->version,
 			'volumes'     => [
-				"{$name}:/import.d",
+				"{$name}:/docker-entrypoint-initdb.d",
 			],
 			'environment' => [
 				'MYSQL_DATABASE'      => $config->get('mysql.name'),

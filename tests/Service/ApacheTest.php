@@ -30,14 +30,17 @@ class ApacheTest extends ServiceTestCase
 	{
 		$expected = [
 			'apache-5.4' => [
-				'build'   => 'docker/apache-5.4',
-				'volumes' => [
+				'build'       => 'docker/apache-5.4',
+				'volumes'     => [
 					'docker/apache-5.4/conf:/etc/apache2/sites-enabled',
 					'docker/apache-5.4/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
-				'links'   => [
+				'links'       => [
 					'mysql-latest',
+				],
+				'environment' => [
+					'VIRTUAL_HOST' => 'j25-mysqli.dev',
 				],
 			],
 		];
@@ -54,9 +57,9 @@ class ApacheTest extends ServiceTestCase
 		$this->assertFileContains(
 			'dockyard/docker/apache-5.4/Dockerfile',
 			[
-                'ENV PHP_VERSION 5.4.45',
-                'ENV XDEBUG_VERSION 2.4.1',
-            ]
+				'ENV PHP_VERSION 5.4.45',
+				'ENV XDEBUG_VERSION 2.4.1',
+			]
 		);
 
 		$this->assertFileContains(

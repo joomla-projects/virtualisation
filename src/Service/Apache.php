@@ -8,7 +8,6 @@
 
 namespace Joomla\Virtualisation\Service;
 
-use Greencape\PhpVersions;
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Template;
 
@@ -38,23 +37,28 @@ class Apache extends PhpBase
 		$name               = 'apache-' . $this->version;
 		$dockerPath         = 'docker/' . $name;
 		$this->setup[$name] = [
-			'build'   => $dockerPath,
-			'volumes' => [
+			'build'       => $dockerPath,
+			'volumes'     => [
 				"$dockerPath/conf:/etc/apache2/sites-enabled",
 				"$dockerPath/html:/var/www/html",
 				getcwd() . '/vendor:/usr/local/lib/php/vendor',
 			],
-			'links'   => [],
+			'links'       => [],
+			'environment' => [
+				'VIRTUAL_HOST' => [],
+			],
 		];
 
 		foreach ($this->configs as $config)
 		{
-			$driver                        = Map::getType($config->get('database.driver'));
-			$version                       = $config->getVersion('database');
-			$this->setup[$name]['links'][] = "$driver-$version";
+			$driver                                              = Map::getType($config->get('database.driver'));
+			$version                                             = $config->getVersion('database');
+			$this->setup[$name]['links'][]                       = "$driver-$version";
+			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $config->getDomain();
 		}
 
-		$this->setup[$name]['links'] = array_unique($this->setup[$name]['links']);
+		$this->setup[$name]['links']                       = array_unique($this->setup[$name]['links']);
+		$this->setup[$name]['environment']['VIRTUAL_HOST'] = implode(',', $this->setup[$name]['environment']['VIRTUAL_HOST']);
 
 		return $this->setup;
 	}
@@ -68,8 +72,15 @@ class Apache extends PhpBase
 	{
 		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version;
 
-		$this->preparePhp($dockerPath);
+		$this->createDockerfile($dockerPath, __DIR__ . '/docker/apache');
+		$this->createVhosts($dockerPath);
+	}
 
+	/**
+	 * @param $dockerPath
+	 */
+	protected function createVhosts($dockerPath)
+	{
 		$vhostTemplate = new Template(__DIR__ . '/template/apache/vhost.conf');
 
 		foreach ($this->configs as $config)
@@ -83,4 +94,5 @@ class Apache extends PhpBase
 			$vhostTemplate->write("$dockerPath/conf/$domain");
 		}
 	}
+
 }
