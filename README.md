@@ -225,4 +225,6 @@ Stops all running containers.
 
 #### `clean`
 
+    $ composer clean
+    
 Removes the containers. If necessary, the containers are stopped for that.
