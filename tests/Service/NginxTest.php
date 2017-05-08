@@ -55,10 +55,10 @@ class NginxTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/docker/nginx-1.9/conf/j3-postgresql.dev/vhost.conf',
+			'dockyard/docker/nginx-1.9/conf/j3-postgresql-19.dev/vhost.conf',
 			[
-				'server_name   j3-postgresql.dev;',
-				'root          /var/www/html/j3-postgresql.dev;',
+				'server_name   j3-postgresql-19.dev;',
+				'root          /var/www/html/j3-postgresql-19.dev;',
 			]
 		);
 	}
