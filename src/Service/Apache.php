@@ -39,8 +39,8 @@ class Apache extends PhpBase
 		$this->setup[$name] = [
 			'build'       => $dockerPath,
 			'volumes'     => [
-				"$dockerPath/conf:/etc/apache2/sites-enabled",
-				"$dockerPath/html:/var/www/html",
+				getcwd() . "/$dockerPath/conf:/etc/apache2/sites-enabled",
+				getcwd() . "/$dockerPath/html:/var/www/html",
 				getcwd() . '/vendor:/usr/local/lib/php/vendor',
 			],
 			'links'       => [],

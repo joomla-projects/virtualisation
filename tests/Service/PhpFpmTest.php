@@ -33,7 +33,7 @@ class PhpFpmTest extends ServiceTestCase
 				'build'   => 'docker/php-5.4',
 				'volumes' => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					'docker/apache-5.4/html/j25-mysqli.dev:/var/www/html/j25-mysqli.dev',
+					getcwd() . '/docker/apache-5.4/html/j25-mysqli.dev:/var/www/html/j25-mysqli.dev',
 				],
 				'links'   => [
 					'mysql-latest',

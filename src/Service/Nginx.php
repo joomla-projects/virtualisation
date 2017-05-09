@@ -33,7 +33,7 @@ class Nginx extends AbstractService
 			'image'       => 'nginx:' . $this->version,
 			'volumes'     => [
 				getcwd() . '/vendor:/usr/local/lib/php/vendor',
-				"$dockerPath/conf:/etc/nginx/conf.d",
+				getcwd() . "/$dockerPath/conf:/etc/nginx/conf.d",
 			],
 			'links'       => [],
 			'environment' => [
@@ -47,7 +47,7 @@ class Nginx extends AbstractService
 			$this->setup[$name]['links'][] = "php-$version";
 
 			$domain                                              = $config->getDomain();
-			$this->setup[$name]['volumes'][]                     = "docker/$name/html/$domain:/var/www/html/$domain";
+			$this->setup[$name]['volumes'][]                     = getcwd() . "/docker/$name/html/$domain:/var/www/html/$domain";
 			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $domain;
 		}
 

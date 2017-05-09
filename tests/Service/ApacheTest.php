@@ -32,8 +32,8 @@ class ApacheTest extends ServiceTestCase
 			'apache-5.4' => [
 				'build'       => 'docker/apache-5.4',
 				'volumes'     => [
-					'docker/apache-5.4/conf:/etc/apache2/sites-enabled',
-					'docker/apache-5.4/html:/var/www/html',
+					getcwd() . '/docker/apache-5.4/conf:/etc/apache2/sites-enabled',
+					getcwd() . '/docker/apache-5.4/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
 				'links'       => [

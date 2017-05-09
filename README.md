@@ -9,6 +9,9 @@ This repository also contains a set of `Dockerfile`s. Once they no longer underg
 
 Joomla! Virtualisation is work in progress. Once it has everything to really be usable, it will be available for installation through Composer.
 
+> Be sure to use recent versions of `docker` and `docker-compose`. The versions you get from the standard repository for Ubuntu 16.04, for example, are too outdated.
+Follow the official instructions for [Docker Community Edition (CE)](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/) to get the most recent versions.
+  
 ## Usage
 
 ```php
