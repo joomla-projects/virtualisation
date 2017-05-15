@@ -29,6 +29,7 @@ class DockerComposeGenerator
 	public function __construct($path)
 	{
 		$this->path = $path;
+		$this->refreshVersionCache();
 	}
 
 	public function write($filename)
@@ -82,7 +83,8 @@ class DockerComposeGenerator
 
 		foreach ($xmlFiles as $file)
 		{
-			$factory->setConfiguration(new ServerConfig($this->path . '/' . $file));
+			$config = new ServerConfig($this->path . '/' . $file);
+			$factory->setConfiguration($config);
 
 			$this->registerServer($factory->getProxyServer());
 			$this->registerServer($factory->getWebserver());
@@ -109,6 +111,6 @@ class DockerComposeGenerator
 
 	private function refreshVersionCache()
 	{
-		$versions = new PhpVersions(null, PhpVersions::VERBOSITY_NORMAL | PhpVersions::CACHE_DISABLED);
+		$versions = new PhpVersions(null, PhpVersions::VERBOSITY_SILENT | PhpVersions::CACHE_DISABLED);
 	}
 }

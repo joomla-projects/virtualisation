@@ -33,11 +33,11 @@ class NginxTest extends ServiceTestCase
 				'image'       => 'nginx:1.9',
 				'volumes'     => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					getcwd() . '/docker/nginx-1.9/conf:/etc/nginx/conf.d',
-					getcwd() . '/docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
+					getcwd() . '/dockyard/docker/nginx-1.9/conf:/etc/nginx/conf.d',
+					getcwd() . '/dockyard/docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
 				],
 				'links'       => [
-					'php-latest',
+					'phpv7p1',
 				],
 				'environment' => [
 					'VIRTUAL_HOST' => 'j3-postgresql-19.dev',
@@ -55,7 +55,7 @@ class NginxTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/docker/nginx-1.9/conf/j3-postgresql-19.dev/vhost.conf',
+			'dockyard/docker/nginx-1.9/conf/j3-postgresql-19.dev.conf',
 			[
 				'server_name   j3-postgresql-19.dev;',
 				'root          /var/www/html/j3-postgresql-19.dev;',

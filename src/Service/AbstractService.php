@@ -44,4 +44,14 @@ abstract class AbstractService implements Service
 	{
 		$this->configs[] = $config;
 	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return string
+	 */
+	protected function fixName($name)
+	{
+		return strtolower(str_replace(['-', '.'], ['v', 'p'], $name));
+	}
 }

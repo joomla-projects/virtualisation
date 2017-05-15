@@ -82,6 +82,10 @@ class ServiceFactory
 
 	public function getPhpServer()
 	{
+		if ($this->config->get('server.type') == 'apache')
+		{
+			return null;
+		}
 		return $this->getService('php', $this->config->getVersion('php'));
 	}
 

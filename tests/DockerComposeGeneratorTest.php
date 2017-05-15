@@ -22,7 +22,6 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 			'dockyard/docker-compose.yml',
 			[
 				"build: docker/apache-5.4",
-				"build: docker/php-5.4",
 				"build: docker/php-latest",
 				"image: 'nginx:1.8'",
 				"image: 'nginx:1.9'",

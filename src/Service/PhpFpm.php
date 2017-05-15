@@ -42,7 +42,7 @@ class PhpFpm extends PhpBase
 			$domain                          = $config->getDomain();
 			$server                          = $config->get('server.type');
 			$version                         = $server == 'apache' ? $config->getVersion('php') : $config->getVersion('server');
-			$this->setup[$name]['volumes'][] = getcwd() . "/docker/$server-$version/html/$domain:/var/www/html/$domain";
+			$this->setup[$name]['volumes'][] = getcwd() . "/$this->dockyard/docker/$server-$version/html/$domain:/var/www/html/$domain";
 		}
 
 		$this->setup[$name]['links'] = array_unique($this->setup[$name]['links']);
