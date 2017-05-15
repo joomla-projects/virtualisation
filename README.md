@@ -65,6 +65,7 @@ Defines version and credentials for a PostgreSQL database server.
     <joomla version="3" sampleData="data"/>
     <database driver="mysql" name="joomla3" prefix="j3m_"/>
     <server type="nginx" offset="UTC" tld="dev"/>
+    <php version="5.4"/>
     <cache enabled="0" time="15" handler="file"/>
     <debug system="1" language="1"/>
     <meta description="Test installation" keywords="" showVersion="0" showTitle="1" showAuthor="1"/>
@@ -108,6 +109,12 @@ Define the server settings.
 - `offset` - The time zone.
 - `tld` - The top level domain for the URL.
 
+##### `php`
+
+Define the PHP version.
+
+- `version` - The PHP version to use. Supported are all minor versions since 5.4. Defaults to 'latest'.
+
 ##### `cache`
 
 Defines the Joomla! cache settings. These values are written to the `configuration.php` file.
@@ -146,7 +153,6 @@ Defines the Joomla! SEF settings. These values are written to the `configuration
 - `unicode` - (Only present in Joomla v1.6.x and later.) When saving edited content, the former setting attempts to convert, where appropriate, any alias text into the corresponding Latin characters. When set to “1”, Joomla leaves any non-Latin characters in the alias text unchanged. Changing this parameter does not retroactively change aliases, it just changes the behaviour of automatic alias generation for future content editing and creation.
 
 ##### `feeds`
-
 
 Defines the Joomla! feeds settings. These values are written to the `configuration.php` file.
 
@@ -198,6 +204,29 @@ On the command line, enter
 within the project's root directory. The tests create a complete setup in the `dockyard` directory, which can be used
 to explore the possibilities.
 
+#### Container Tests
+
+For the Apache and PHP-FPM containers, this project provides own images (see `src/Service/docker`). To ensure that those
+images have the required traits, a separate suite of tests was created in `tests-container`. They were separated
+from the other tests, because they need 1-2 minutes for each container and PHP version to run.
+
+The tests ensure that for each supported PHP version
+
+- Containers build successfully and
+- both FPM resp. Apache handler and CLI
+  - have the requested PHP version
+  - have a suitable Xdebug version enabled
+  - use catchmail instead of sendmail
+  - support OpenSSL
+  - support MysqlI and PDO Driver for MySQL
+  - support PostgreSQL and PDO Driver for PostgreSQL
+
+To run these tests, enter
+
+    $ phpunit tests-container
+
+on the command line.
+
 ### Convenience Commands
 
 Some `composer` scripts are provided to make life a bit easier. They are run from the project's root directory, and frees you from having to change into the `dockyard` directory as required by `docker-compose`.
@@ -206,7 +235,7 @@ Some `composer` scripts are provided to make life a bit easier. They are run fro
 
     $ composer test
     
-PHPUnit is run with the `--testdox` option.
+PHPUnit is run with the `--testdox` option after removing `dockyard` content.
 
 #### `build`
 
@@ -230,4 +259,4 @@ Stops all running containers.
 
     $ composer clean
     
-Removes the containers. If necessary, the containers are stopped for that.
+Removes the containers and the `dockyard` content. If necessary, the containers are stopped automatically.

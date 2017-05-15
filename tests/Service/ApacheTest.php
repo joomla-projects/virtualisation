@@ -32,8 +32,8 @@ class ApacheTest extends ServiceTestCase
 			'apache-5.4' => [
 				'build'       => 'docker/apache-5.4',
 				'volumes'     => [
-					getcwd() . '/docker/apache-5.4/conf:/etc/apache2/sites-enabled',
-					getcwd() . '/docker/apache-5.4/html:/var/www/html',
+					getcwd() . '/dockyard/docker/apache-5.4/conf:/etc/apache2/sites-enabled',
+					getcwd() . '/dockyard/docker/apache-5.4/html:/var/www/html',
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
 				],
 				'links'       => [
@@ -57,8 +57,8 @@ class ApacheTest extends ServiceTestCase
 		$this->assertFileContains(
 			'dockyard/docker/apache-5.4/Dockerfile',
 			[
-				'ENV PHP_VERSION 5.4.45',
-				'ENV XDEBUG_VERSION 2.4.1',
+				'php:5.4-apache',
+				'pecl install xdebug-2.4.1',
 			]
 		);
 

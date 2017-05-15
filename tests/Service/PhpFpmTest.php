@@ -22,21 +22,21 @@ class PhpFpmTest extends ServiceTestCase
 	public function setUp()
 	{
 		$serverFactory = new ServiceFactory();
-		$serverFactory->setConfiguration(new ServerConfig(__DIR__ . '/../fixtures/j25.xml'));
+		$serverFactory->setConfiguration(new ServerConfig(__DIR__ . '/../fixtures/j3x.xml'));
 		$this->service = $serverFactory->getPhpServer();
 	}
 
 	public function testServiceSetupIsGeneratedAsAnArraySuitableForDockerCompose()
 	{
 		$expected = [
-			'php-5.4' => [
-				'build'   => 'docker/php-5.4',
+			'php-7.1' => [
+				'build'   => 'docker/php-7.1',
 				'volumes' => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					getcwd() . '/docker/apache-5.4/html/j25-mysqli.dev:/var/www/html/j25-mysqli.dev',
+					getcwd() . '/docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
 				],
 				'links'   => [
-					'mysql-latest',
+					'postgresql-latest',
 				],
 			],
 		];
@@ -51,10 +51,10 @@ class PhpFpmTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/docker/php-5.4/Dockerfile',
+			'dockyard/docker/php-7.1/Dockerfile',
 			[
-				'ENV PHP_VERSION 5.4.45',
-				'ENV XDEBUG_VERSION 2.4.1',
+				'php:7.1-fpm',
+				'pecl install xdebug-2.5.3',
 			]
 		);
 	}

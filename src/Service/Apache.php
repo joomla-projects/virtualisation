@@ -8,7 +8,6 @@
 
 namespace Joomla\Virtualisation\Service;
 
-use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Template;
 
 /**
@@ -19,14 +18,6 @@ use Joomla\Virtualisation\Template;
  */
 class Apache extends PhpBase
 {
-	public function __construct($version, ServerConfig $config)
-	{
-		parent::__construct($version, $config);
-
-		// The Apache service uses the PHP version!
-		$this->version = $config->getVersion('php');
-	}
-
 	/**
 	 * Get the setup (suitable for docker-compose files)
 	 *
@@ -35,9 +26,9 @@ class Apache extends PhpBase
 	public function getSetup()
 	{
 		$name               = 'apache-' . $this->version;
-		$dockerPath         = 'docker/' . $name;
+		$dockerPath         = $this->dockyard . '/docker/' . $name;
 		$this->setup[$name] = [
-			'build'       => $dockerPath,
+			'build'       => 'docker/' . $name,
 			'volumes'     => [
 				getcwd() . "/$dockerPath/conf:/etc/apache2/sites-enabled",
 				getcwd() . "/$dockerPath/html:/var/www/html",

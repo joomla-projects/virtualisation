@@ -29,6 +29,7 @@
   },
   "scripts": {
     "test": [
+      "rm -rf dockyard/*",
       "phpunit --testdox"
     ],
     "build": [
@@ -37,7 +38,6 @@
       "cd .."
     ],
     "start": [
-      "@test",
       "cd dockyard && docker-compose up -d",
       "cd .."
     ],
@@ -48,7 +48,8 @@
     "clean": [
       "@stop",
       "cd dockyard && docker-compose rm --force",
-      "cd .."
+      "cd ..",
+      "rm -rf dockyard/*"
     ]
   }
 }

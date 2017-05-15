@@ -28,7 +28,7 @@ class Nginx extends AbstractService
 	public function getSetup()
 	{
 		$name               = 'nginx-' . $this->version;
-		$dockerPath         = 'docker/' . $name;
+		$dockerPath         = $this->dockyard . '/docker/' . $name;
 		$this->setup[$name] = [
 			'image'       => 'nginx:' . $this->version,
 			'volumes'     => [
@@ -47,7 +47,7 @@ class Nginx extends AbstractService
 			$this->setup[$name]['links'][] = "php-$version";
 
 			$domain                                              = $config->getDomain();
-			$this->setup[$name]['volumes'][]                     = getcwd() . "/docker/$name/html/$domain:/var/www/html/$domain";
+			$this->setup[$name]['volumes'][]                     = getcwd() . "/$dockerPath/html/$domain:/var/www/html/$domain";
 			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $domain;
 		}
 
