@@ -63,7 +63,7 @@ class ApacheTest extends ServiceTestCase
 		);
 
 		$this->assertFileContains(
-			'dockyard/docker/apache-5.4/conf/j25-mysqli.dev',
+			'dockyard/docker/apache-5.4/conf/j25-mysqli.dev.conf',
 			[
 				'ServerName      j25-mysqli.dev',
 				'DocumentRoot    /var/www/html/j25-mysqli.dev',

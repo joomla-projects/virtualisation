@@ -82,7 +82,7 @@ class Apache extends PhpBase
 					'domain' => $domain,
 				]
 			);
-			$vhostTemplate->write("$dockerPath/conf/$domain");
+			$vhostTemplate->write("$dockerPath/conf/$domain.conf");
 		}
 	}
 
