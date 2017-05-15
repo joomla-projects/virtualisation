@@ -33,7 +33,7 @@ class PhpFpmTest extends ServiceTestCase
 				'build'   => 'docker/php-7.1',
 				'volumes' => [
 					getcwd() . '/vendor:/usr/local/lib/php/vendor',
-					getcwd() . '/docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
+					getcwd() . '/dockyard/docker/nginx-1.9/html/j3-postgresql-19.dev:/var/www/html/j3-postgresql-19.dev',
 				],
 				'links'   => [
 					'postgresql-latest',
