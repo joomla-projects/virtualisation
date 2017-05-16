@@ -248,7 +248,7 @@ class Joomla extends AbstractService
 
 			// Database settings
 			'dbtype'          => $databaseDriver,
-			'host'            => $databaseEngine,
+			'host'            => $this->fixName($databaseEngine . '-' . $config->getVersion($databaseEngine)),
 			'user'            => $config->get($databaseEngine . '.user'),
 			'password'        => $config->get($databaseEngine . '.password'),
 			'db'              => $config->get('database.name'),
