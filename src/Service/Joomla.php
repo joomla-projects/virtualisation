@@ -69,52 +69,38 @@ class Joomla extends AbstractService
 	}
 
 	/**
-	 * @param $version
-	 * @param $versionFile
-	 * @param $cachePath
+	 * @param $htdocs
 	 *
-	 * @return null|string
+	 * @return string
 	 */
-	protected function getTarball($version, $versionFile, $cachePath)
+	protected function prepareSource($htdocs)
 	{
-		$versions  = json_decode(file_get_contents($versionFile), true);
-		$requested = $version;
+		$versionFile = 'dockyard/joomla-versions.json';
+		$cachePath   = __DIR__ . '/cache';
+		$this->createDirectory($cachePath);
 
-		// Resolve alias
-		if (isset($versions['alias'][$version]))
+		$this->getVersions($versionFile);
+		$tarball = $this->getTarball($this->version, $versionFile, $cachePath);
+
+		$this->clearDirectory($htdocs);
+		$this->untar($tarball, $htdocs);
+
+		$sourcePath = $htdocs . '/joomla-cms-' . basename($tarball, '.tar.gz');
+
+		$this->removeDirectory($sourcePath . '/.github');
+
+		return $sourcePath;
+	}
+
+	/**
+	 * @param $directory
+	 */
+	protected function createDirectory($directory)
+	{
+		if (!file_exists($directory))
 		{
-			$version = $versions['alias'][$version];
+			mkdir($directory, 0777, true);
 		}
-
-		$tarball = $cachePath . '/' . $version . '.tar.gz';
-
-		if (file_exists($tarball) && !isset($versions['heads'][$version]))
-		{
-			return $tarball;
-		}
-
-		if (isset($versions['heads'][$version]))
-		{
-			// It's a branch, so get it from the original repo
-			$url = 'http://github.com/joomla/joomla-cms/tarball/' . $version;
-		}
-		elseif (isset($versions['tags'][$version]))
-		{
-			$url = 'https://github.com/' . $versions['tags'][$version] . '/archive/' . $version . '.tar.gz';
-		}
-		else
-		{
-			throw new \RuntimeException("$requested: Version is unknown");
-		}
-
-		$bytes = file_put_contents($tarball, fopen($url, 'r'));
-
-		if ($bytes === false || $bytes == 0)
-		{
-			throw new \RuntimeException("$requested: Failed to download $url");
-		}
-
-		return $tarball;
 	}
 
 	/**
@@ -183,16 +169,62 @@ class Joomla extends AbstractService
 		}
 	}
 
-	protected function untar($archive, $destination)
+	/**
+	 * @param $version
+	 * @param $versionFile
+	 * @param $cachePath
+	 *
+	 * @return null|string
+	 */
+	protected function getTarball($version, $versionFile, $cachePath)
 	{
-		static $archiveManager = null;
+		$versions  = json_decode(file_get_contents($versionFile), true);
+		$requested = $version;
 
-		if (is_null($archiveManager))
+		// Resolve alias
+		if (isset($versions['alias'][$version]))
 		{
-			$archiveManager = Zippy::load();
+			$version = $versions['alias'][$version];
 		}
 
-		$archiveManager->open($archive)->extract($destination);
+		$tarball = $cachePath . '/' . $version . '.tar.gz';
+
+		if (file_exists($tarball) && !isset($versions['heads'][$version]))
+		{
+			return $tarball;
+		}
+
+		if (isset($versions['heads'][$version]))
+		{
+			// It's a branch, so get it from the original repo
+			$url = 'http://github.com/joomla/joomla-cms/tarball/' . $version;
+		}
+		elseif (isset($versions['tags'][$version]))
+		{
+			$url = 'https://github.com/' . $versions['tags'][$version] . '/archive/' . $version . '.tar.gz';
+		}
+		else
+		{
+			throw new \RuntimeException("$requested: Version is unknown");
+		}
+
+		$bytes = file_put_contents($tarball, fopen($url, 'r'));
+
+		if ($bytes === false || $bytes == 0)
+		{
+			throw new \RuntimeException("$requested: Failed to download $url");
+		}
+
+		return $tarball;
+	}
+
+	/**
+	 * @param $directory
+	 */
+	protected function clearDirectory($directory)
+	{
+		$this->removeDirectory($directory);
+		$this->createDirectory($directory);
 	}
 
 	/**
@@ -213,6 +245,18 @@ class Joomla extends AbstractService
 		rmdir($directory);
 	}
 
+	protected function untar($archive, $destination)
+	{
+		static $archiveManager = null;
+
+		if (is_null($archiveManager))
+		{
+			$archiveManager = Zippy::load();
+		}
+
+		$archiveManager->open($archive)->extract($destination);
+	}
+
 	/**
 	 * @param   ServerConfig $config
 	 *
@@ -228,8 +272,47 @@ class Joomla extends AbstractService
 	}
 
 	/**
+	 * @param string       $filename
+	 * @param string       $destination
 	 * @param ServerConfig $config
-	 * @param string $destination
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	protected function appendSql($filename, $destination, $config)
+	{
+		$databaseEngine   = Map::getType($config->get('database.driver'));
+		$databaseVersion  = $config->getVersion($databaseEngine);
+		$databaseName     = $config->get('database.name');
+		$databaseDir      = $this->dockyard . '/' . $databaseEngine . '-' . $databaseVersion;
+		$installationData = $destination . '/installation/sql/' . $databaseEngine . '/' . $filename;
+
+		if (!file_exists($installationData))
+		{
+			throw new \Exception("Joomla! $this->version does not provide '$filename' for $databaseEngine.");
+		}
+
+		$sql = str_replace('#__', $config->get('database.prefix'), file_get_contents($installationData));
+		if ($databaseEngine == 'postgresql')
+		{
+			// Fix escaping
+			$sql = str_replace("\\'", "''", $sql);
+			file_put_contents("$databaseDir/$databaseName.dump", $sql, FILE_APPEND);
+
+			$databaseUser = $config->get('postgresql.user');
+			$script = "psql -v ON_ERROR_STOP=1 --username=\"$databaseUser\" --dbname=\"$databaseName\" --file=\"/docker-entrypoint-initdb.d/$databaseName.dump\"\n";
+
+			file_put_contents("$databaseDir/10-$databaseName.sh", $script);
+
+			return;
+		}
+
+		file_put_contents("$databaseDir/$databaseName.sql", $sql, FILE_APPEND);
+	}
+
+	/**
+	 * @param ServerConfig $config
+	 * @param string       $destination
 	 */
 	private function updateConfiguration($config, $destination)
 	{
@@ -312,97 +395,6 @@ class Joomla extends AbstractService
 	}
 
 	/**
-	 * @param $directory
-	 */
-	protected function createDirectory($directory)
-	{
-		if (!file_exists($directory))
-		{
-			mkdir($directory, 0777, true);
-		}
-	}
-
-	/**
-	 * @param $directory
-	 */
-	protected function clearDirectory($directory)
-	{
-		$this->removeDirectory($directory);
-		$this->createDirectory($directory);
-	}
-
-	/**
-	 * @param $htdocs
-	 *
-	 * @return string
-	 */
-	protected function prepareSource($htdocs)
-	{
-		$versionFile = 'dockyard/joomla-versions.json';
-		$cachePath   = __DIR__ . '/cache';
-		$this->createDirectory($cachePath);
-
-		$this->getVersions($versionFile);
-		$tarball = $this->getTarball($this->version, $versionFile, $cachePath);
-
-		$this->clearDirectory($htdocs);
-		$this->untar($tarball, $htdocs);
-
-		$sourcePath = $htdocs . '/joomla-cms-' . basename($tarball, '.tar.gz');
-
-		$this->removeDirectory($sourcePath . '/.github');
-
-		return $sourcePath;
-	}
-
-	/**
-	 * @param string       $filename
-	 * @param string       $destination
-	 * @param ServerConfig $config
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	protected function appendSql($filename, $destination, $config)
-	{
-		$databaseEngine  = Map::getType($config->get('database.driver'));
-		$databaseVersion = $config->getVersion($databaseEngine);
-		$databaseName    = $config->get('database.name');
-		$dataBaseFile    = $this->dockyard . '/' . $databaseEngine . '-' . $databaseVersion . '/' . $databaseName . '.sql';
-
-		$installationData = $destination . '/installation/sql/' . $databaseEngine . '/' . $filename;
-
-		if (!file_exists($installationData))
-		{
-			throw new \Exception("Joomla! $this->version does not provide '$filename' for $databaseEngine.");
-		}
-
-		$sql = str_replace('#__', $config->get('database.prefix'), file_get_contents($installationData));
-		if ($databaseEngine == 'postgresql')
-		{
-			// Fix escaping
-			$sql = str_replace("\\'","''", $sql);
-		}
-		file_put_contents($dataBaseFile, $sql, FILE_APPEND);
-	}
-
-	/**
-	 * @param $rawReplacements
-	 *
-	 * @return array
-	 */
-	private function prepareReplacements($rawReplacements)
-	{
-		$replacements = [];
-		foreach ($rawReplacements as $key => $value)
-		{
-			$replacements['~(\$' . $key . '\s*=\s*)(.*?);(?:\s*//\s*(.*))?~'] = '\1\'' . $value . '\'; // \3 was: \2';
-		}
-
-		return $replacements;
-	}
-
-	/**
 	 * @param $destination
 	 *
 	 * @return string
@@ -424,5 +416,21 @@ class Joomla extends AbstractService
 		}
 
 		throw new \Exception('No configuration file found!');
+	}
+
+	/**
+	 * @param $rawReplacements
+	 *
+	 * @return array
+	 */
+	private function prepareReplacements($rawReplacements)
+	{
+		$replacements = [];
+		foreach ($rawReplacements as $key => $value)
+		{
+			$replacements['~(\$' . $key . '\s*=\s*)(.*?);(?:\s*//\s*(.*))?~'] = '\1\'' . $value . '\'; // \3 was: \2';
+		}
+
+		return $replacements;
 	}
 }

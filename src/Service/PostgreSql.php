@@ -64,7 +64,7 @@ class PostgreSql extends AbstractService
 					'postgresql.user' => $config->get('postgresql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/postgresql-{$this->version}/$databaseName.sql");
+			$template->write("{$this->dockyard}/postgresql-{$this->version}/00-$databaseName.sql");
 		}
 	}
 }
