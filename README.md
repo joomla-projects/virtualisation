@@ -1,13 +1,13 @@
 # Joomla! Virtualisation
 
-The Joomla! Virtualisation tool generates a `docker-compose.yml` file
-based on XML setup definitions used for - but not limited to - automated testing.
+The Joomla! Virtualisation tool generates a `docker-compose.yml` file based on XML setup definitions used for - but not limited to - automated testing. 
+It is based on [GreenCape/build](https://github.com/GreenCape/build).
 
-This repository also contains a set of `Dockerfile`s. Once they no longer undergo frequent changes, they will be available on DockerHub.
+*This repository also contains a set of* `Dockerfile`*s. Once they no longer undergo frequent changes, the images will be available on DockerHub.*
 
 ## Installation
 
-Joomla! Virtualisation is work in progress. Once it has everything to really be usable, it will be available for installation through Composer.
+*Joomla! Virtualisation is work in progress. Once it has everything to really be usable, it will be available for installation through Composer.*
 
 > Be sure to use recent versions of `docker` and `docker-compose`. The versions you get from the standard repository for Ubuntu 16.04, for example, are too outdated.
 Follow the official instructions for [Docker Community Edition (CE)](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/) to get the most recent versions.
@@ -42,7 +42,7 @@ The database credentials are expected to be in a file named `database.xml` in th
 
 Defines version and credentials for a MySQL (compatible) database server.
 
-- `version` - The version of MySQL to use. Currently, only latest is supported.
+- `version` - The version of MySQL to use. Supported are all minor versions since MySQL 5.5. Defaults to 'latest'.
 - `name` - The name of the database.
 - `user` - The name of the database user.
 - `password` - The database user’s password.
@@ -52,7 +52,7 @@ Defines version and credentials for a MySQL (compatible) database server.
 
 Defines version and credentials for a PostgreSQL database server.
 
-- `version` - The version of PostgreSQL to use. Currently, only latest is supported.
+- `version` - The version of PostgreSQL to use. Supported are all minor versions since PostgreSQL 9.2. Defaults to 'latest'.
 - `name` - The name of the database.
 - `user` - The name of the database user.
 - `password` - The database user’s password.
@@ -75,7 +75,7 @@ Defines version and credentials for a PostgreSQL database server.
 </environment>
 ```
 
-- `name` - The name for this environment. For the default environment, it is always default.
+- `name` - The name for this environment. For the default environment, it is always `default`.
 
 Common settings to all test servers are kept in an environment named `default` and stored in `default.xml`.
 An average environment definition will contain just the server, joomla, and database elements.
@@ -113,7 +113,7 @@ Define the server settings.
 
 Define the PHP version.
 
-- `version` - The PHP version to use. Supported are all minor versions since 5.4. Defaults to 'latest'.
+- `version` - The PHP version to use. Supported are all minor versions since PHP 5.4. Defaults to 'latest'.
 
 ##### `cache`
 
