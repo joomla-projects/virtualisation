@@ -248,7 +248,7 @@ PHPUnit is run with the `--testdox` option after removing `dockyard` content.
     $ composer build
     
 Runs the main test and builds all docker images. This network is created:
-![Docker Network](blob/master/assets/setup.svg)
+![Docker Network](assets/setup.svg)
 
 #### Start the Virtual Network
 
