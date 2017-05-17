@@ -33,7 +33,8 @@
       "phpunit --testdox"
     ],
     "build": [
-      "@test",
+      "rm -rf dockyard/*",
+      "phpunit tests/DockerComposeGeneratorTest",
       "cd dockyard && docker-compose build",
       "cd .."
     ],
@@ -47,7 +48,7 @@
     ],
     "clean": [
       "@stop",
-      "cd dockyard && docker-compose rm --force",
+      "cd dockyard && docker-compose down",
       "cd ..",
       "rm -rf dockyard/*"
     ]
