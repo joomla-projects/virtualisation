@@ -30,7 +30,7 @@ class MySqlTest extends ServiceTestCase
 	{
 		$expected = [
 			'mysql-latest' => [
-				'image'       => 'mariadb:latest',
+				'image'       => 'mysql:latest',
 				'volumes'     => [
 					getcwd() . '/dockyard/mysql-latest:/docker-entrypoint-initdb.d',
 				],
