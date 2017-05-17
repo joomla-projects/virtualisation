@@ -201,8 +201,14 @@ On the command line, enter
 
     $ phpunit
 
-within the project's root directory. The tests create a complete setup in the `dockyard` directory, which can be used
-to explore the possibilities.
+within the project's root directory.
+
+The main test creates a complete setup in the `dockyard` directory, which can be used
+to explore the possibilities. To invoke it, run
+
+    $ phpunit tests/DockerComposeGeneratorTest
+    
+This step is already included in the convenience command `composer build` as described below.
 
 #### Container Tests
 
@@ -231,32 +237,32 @@ on the command line.
 
 Some `composer` scripts are provided to make life a bit easier. They are run from the project's root directory, and frees you from having to change into the `dockyard` directory as required by `docker-compose`.
 
-#### `test`
+#### Run the Tests in Clean Environment
 
     $ composer test
     
 PHPUnit is run with the `--testdox` option after removing `dockyard` content.
 
-#### `build`
+#### Setup the Virtual Network
 
     $ composer build
     
-Runs the tests and builds all docker images. This network is created:
-![Docker Network](assets/setup.svg)
+Runs the main test and builds all docker images. This network is created:
+![Docker Network](blob/master/assets/setup.svg)
 
-#### `start`
+#### Start the Virtual Network
 
     $composer start
     
 Starts the containers in the background after running the tests.
 
-#### `stop`
+#### Stop the Virtual Network
 
     $ composer stop
     
 Stops all running containers.
 
-#### `clean`
+#### Tear Down the Virtual Network
 
     $ composer clean
     
