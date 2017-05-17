@@ -56,13 +56,15 @@ class PostgreSql extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
+			$databaseName = $config->get('database.name');
+
 			$template->setVariables(
 				[
-					'database.name'   => $config->get('database.name'),
+					'postgresql.name' => $databaseName,
 					'postgresql.user' => $config->get('postgresql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/postgresql-{$this->version}/" . $config->get('database.name') . '.sql');
+			$template->write("{$this->dockyard}/postgresql-{$this->version}/$databaseName.sql");
 		}
 	}
 }

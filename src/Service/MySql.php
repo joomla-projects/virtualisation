@@ -57,13 +57,15 @@ class MySql extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
+			$databaseName = $config->get('database.name');
+
 			$template->setVariables(
 				[
-					'database.name' => $config->get('database.name'),
-					'mysql.user'    => $config->get('mysql.user'),
+					'mysql.name' => $databaseName,
+					'mysql.user' => $config->get('mysql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/mysql-{$this->version}/" . $config->get('database.name') . '.sql');
+			$template->write("{$this->dockyard}/mysql-{$this->version}/$databaseName.sql");
 		}
 	}
 }

@@ -1,1 +1,1 @@
-CREATE DATABASE "${database.name}" OWNER "${postgresql.user}" ;
+CREATE DATABASE "${postgresql.name}" OWNER "${postgresql.user}" ;
