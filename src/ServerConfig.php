@@ -26,8 +26,8 @@ class ServerConfig
 		'cache.handler'       => "file",
 		'cache.time'          => "15",
 		'database.driver'     => "mysqli",
-		'database.name'       => "joomla3",
-		'database.prefix'     => "j3m_",
+		'database.name'       => "joomla_test",
+		'database.prefix'     => "jos_",
 		'debug.language'      => "1",
 		'debug.system'        => "1",
 		'feeds.email'         => "author",
@@ -39,7 +39,7 @@ class ServerConfig
 		'meta.keywords'       => "",
 		'meta.showAuthor'     => "1",
 		'meta.showTitle'      => "1",
-		'meta.showVersion'    => "0",
+		'meta.showVersion'    => "1",
 		'mysql.name'          => "joomla_test",
 		'mysql.password'      => "sqladmin",
 		'mysql.rootPassword'  => "root",
@@ -134,6 +134,14 @@ class ServerConfig
 	 */
 	public function get($key)
 	{
+		if (in_array($key, ['mysql.name', 'postgresql.name']))
+		{
+			if (empty($this->config[$key]))
+			{
+				return $this->config['database.name'];
+			}
+		}
+
 		if (!isset($this->config[$key]))
 		{
 			return null;

@@ -29,9 +29,12 @@ class PostgreSql extends AbstractService
 	{
 		$config             = reset($this->configs);
 		$name               = 'postgresql-' . $this->version;
+		$dockerPath         = $this->dockyard . '/' . $name;
 		$this->setup[$name] = [
 			'image'       => 'postgres:' . $this->version,
-			'volumes'     => ["{$name}:/docker-entrypoint-initdb.d"],
+			'volumes'     => [
+				getcwd() . "/$dockerPath:/docker-entrypoint-initdb.d",
+			],
 			'environment' => [
 				'POSTGRES_DB'       => $config->get('postgresql.name'),
 				'POSTGRES_USER'     => $config->get('postgresql.user'),
@@ -53,13 +56,15 @@ class PostgreSql extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
+			$databaseName = $config->get('database.name');
+
 			$template->setVariables(
 				[
-					'database.name'   => $config->get('database.name'),
+					'postgresql.name' => $databaseName,
 					'postgresql.user' => $config->get('postgresql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/postgresql-{$this->version}/" . $config->get('database.name') . '.sql');
+			$template->write("{$this->dockyard}/postgresql-{$this->version}/00-$databaseName.sql");
 		}
 	}
 }

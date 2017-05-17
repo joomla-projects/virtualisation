@@ -25,7 +25,7 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 				"build: docker/php-latest",
 				"image: 'nginx:1.8'",
 				"image: 'nginx:1.9'",
-				"image: 'mariadb:latest'",
+				"image: 'mysql:latest'",
 				"image: 'postgres:latest'",
 			]
 		);

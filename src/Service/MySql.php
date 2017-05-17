@@ -29,10 +29,11 @@ class MySql extends AbstractService
 	{
 		$config             = reset($this->configs);
 		$name               = 'mysql-' . $this->version;
+		$dockerPath         = $this->dockyard . '/' . $name;
 		$this->setup[$name] = [
-			'image'       => 'mariadb:' . $this->version,
+			'image'       => 'mysql:' . $this->version,
 			'volumes'     => [
-				"{$name}:/docker-entrypoint-initdb.d",
+				getcwd() . "/$dockerPath:/docker-entrypoint-initdb.d",
 			],
 			'environment' => [
 				'MYSQL_DATABASE'      => $config->get('mysql.name'),
@@ -56,13 +57,15 @@ class MySql extends AbstractService
 
 		foreach ($this->configs as $config)
 		{
+			$databaseName = $config->get('database.name');
+
 			$template->setVariables(
 				[
-					'database.name' => $config->get('database.name'),
-					'mysql.user'    => $config->get('mysql.user'),
+					'mysql.name' => $databaseName,
+					'mysql.user' => $config->get('mysql.user'),
 				]
 			);
-			$template->write("{$this->dockyard}/mysql-{$this->version}/" . $config->get('database.name') . '.sql');
+			$template->write("{$this->dockyard}/mysql-{$this->version}/$databaseName.sql");
 		}
 	}
 }
