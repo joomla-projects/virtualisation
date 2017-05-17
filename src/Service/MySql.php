@@ -29,10 +29,11 @@ class MySql extends AbstractService
 	{
 		$config             = reset($this->configs);
 		$name               = 'mysql-' . $this->version;
+		$dockerPath         = $this->dockyard . '/' . $name;
 		$this->setup[$name] = [
-			'image'       => 'mariadb:' . $this->version,
+			'image'       => 'mysql:' . $this->version,
 			'volumes'     => [
-				"{$name}:/docker-entrypoint-initdb.d",
+				getcwd() . "/$dockerPath:/docker-entrypoint-initdb.d",
 			],
 			'environment' => [
 				'MYSQL_DATABASE'      => $config->get('mysql.name'),

@@ -366,7 +366,7 @@ class Joomla extends AbstractService
 	protected function appendSql($filename, $destination, $config)
 	{
 		$databaseEngine  = Map::getType($config->get('database.driver'));
-		$databaseVersion = $config->getVersion('database');
+		$databaseVersion = $config->getVersion($databaseEngine);
 		$databaseName    = $config->get('database.name');
 		$dataBaseFile    = $this->dockyard . '/' . $databaseEngine . '-' . $databaseVersion . '/' . $databaseName . '.sql';
 
@@ -378,6 +378,11 @@ class Joomla extends AbstractService
 		}
 
 		$sql = str_replace('#__', $config->get('database.prefix'), file_get_contents($installationData));
+		if ($databaseEngine == 'postgresql')
+		{
+			// Fix escaping
+			$sql = str_replace("\\'","''", $sql);
+		}
 		file_put_contents($dataBaseFile, $sql, FILE_APPEND);
 	}
 
