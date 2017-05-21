@@ -16,7 +16,7 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 	public function testTheGeneratedFileContainsCorrectBuildInstructions()
 	{
 		$generator = new DockerComposeGenerator('tests/fixtures');
-		$generator->write('dockyard/docker-compose.yml');
+		$info      = $generator->write('dockyard/docker-compose.yml');
 
 		$this->assertFileContains(
 			'dockyard/docker-compose.yml',
@@ -29,5 +29,29 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 				"image: 'postgres:latest'",
 			]
 		);
+
+		$expected = [
+			'j25-mysqli.dev'       => [
+				'name'   => 'apachev5p4',
+				'url'    => 'j25-mysqli.dev',
+				'volume' => getcwd() . "/dockyard/docker/apache-5.4/html/j25-mysqli.dev",
+			],
+			'j3-postgresql-19.dev' => [
+				'name'   => 'nginxv1p9',
+				'url'    => 'j3-postgresql-19.dev',
+				'volume' => getcwd() . "/dockyard/docker/nginx-1.9/html/j3-postgresql-19.dev",
+			],
+			'j3-postgresql-18.dev' => [
+				'name'   => 'nginxv1p8',
+				'url'    => 'j3-postgresql-18.dev',
+				'volume' => getcwd() . "/dockyard/docker/nginx-1.8/html/j3-postgresql-18.dev",
+			],
+			'j3-mysql.dev'         => [
+				'name'   => 'nginxvlatest',
+				'url'    => 'j3-mysql.dev',
+				'volume' => getcwd() . "/dockyard/docker/nginx-latest/html/j3-mysql.dev",
+			],
+		];
+		$this->assertEquals($expected, $info);
 	}
 }

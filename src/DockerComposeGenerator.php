@@ -32,12 +32,37 @@ class DockerComposeGenerator
 		$this->refreshVersionCache();
 	}
 
+	private function refreshVersionCache()
+	{
+		$versions = new PhpVersions(null, PhpVersions::VERBOSITY_SILENT | PhpVersions::CACHE_DISABLED);
+	}
+
 	public function write($filename)
 	{
 		$xmlFiles = array_diff(scandir($this->path), ['.', '..', 'database.xml', 'default.xml']);
 		$services = $this->getCombinedSetup($this->getServices($xmlFiles));
 
-		return file_put_contents($filename, Yaml::dump($services, 4, 2));
+		$info = [];
+		foreach ($services as $name => $service)
+		{
+			if (isset($service['environment']['VIRTUAL_HOST']))
+			{
+				$path = $this->getHtmlPath($service);
+
+				foreach (explode(',', $service['environment']['VIRTUAL_HOST']) as $virtualHost)
+				{
+					$info[$virtualHost] = [
+						'name'   => $name,
+						'url'    => $virtualHost,
+						'volume' => $path . '/' . $virtualHost,
+					];
+				}
+			}
+		}
+
+		file_put_contents($filename, Yaml::dump($services, 4, 2));
+
+		return $info;
 	}
 
 	/**
@@ -109,8 +134,22 @@ class DockerComposeGenerator
 		$this->servers[spl_object_hash($server)] = $server;
 	}
 
-	private function refreshVersionCache()
+	/**
+	 * @param $service
+	 *
+	 * @return string
+	 */
+	protected function getHtmlPath($service)
 	{
-		$versions = new PhpVersions(null, PhpVersions::VERBOSITY_SILENT | PhpVersions::CACHE_DISABLED);
+		foreach ($service['volumes'] as $volume)
+		{
+			$parts = explode('/html', $volume);
+			if (count($parts) > 1)
+			{
+				return $parts[0] . '/html';
+			}
+		}
+
+		return '';
 	}
 }
