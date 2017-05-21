@@ -75,7 +75,7 @@ class Joomla extends AbstractService
 	 */
 	protected function prepareSource($htdocs)
 	{
-		$versionFile = 'dockyard/joomla-versions.json';
+		$versionFile = $this->dockyard . '/joomla-versions.json';
 		$cachePath   = __DIR__ . '/cache';
 		$this->createDirectory($cachePath);
 
