@@ -42,27 +42,9 @@ class DockerComposeGenerator
 		$xmlFiles = array_diff(scandir($this->path), ['.', '..', 'database.xml', 'default.xml']);
 		$services = $this->getCombinedSetup($this->getServices($xmlFiles));
 
-		$info = [];
-		foreach ($services as $name => $service)
-		{
-			if (isset($service['environment']['VIRTUAL_HOST']))
-			{
-				$path = $this->getHtmlPath($service);
-
-				foreach (explode(',', $service['environment']['VIRTUAL_HOST']) as $virtualHost)
-				{
-					$info[$virtualHost] = [
-						'name'   => $name,
-						'url'    => $virtualHost,
-						'volume' => $path . '/' . $virtualHost,
-					];
-				}
-			}
-		}
-
 		file_put_contents($filename, Yaml::dump($services, 4, 2));
 
-		return $info;
+		return $this->getHostInfo($services);
 	}
 
 	/**
@@ -151,5 +133,33 @@ class DockerComposeGenerator
 		}
 
 		return '';
+	}
+
+	/**
+	 * @param $services
+	 *
+	 * @return array
+	 */
+	protected function getHostInfo($services)
+	{
+		$info = [];
+		foreach ($services as $name => $service)
+		{
+			if (isset($service['environment']['VIRTUAL_HOST']))
+			{
+				$path = $this->getHtmlPath($service);
+
+				foreach (explode(',', $service['environment']['VIRTUAL_HOST']) as $virtualHost)
+				{
+					$info[$virtualHost] = [
+						'name'   => $name,
+						'url'    => $virtualHost,
+						'volume' => $path . '/' . $virtualHost,
+					];
+				}
+			}
+		}
+
+		return $info;
 	}
 }
