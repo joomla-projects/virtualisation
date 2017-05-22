@@ -23,10 +23,13 @@ class Proxy extends AbstractService
 	 */
 	public function getSetup()
 	{
+		$config = $this->configs[0];
+		$port = $config->get('host.port');
+
 		return [
 			'proxy' => [
 				'image'   => 'jwilder/nginx-proxy:alpine',
-				'ports'   => ["80:80"],
+				'ports'   => ["$port:80"],
 				'volumes' => ['/var/run/docker.sock:/tmp/docker.sock:ro'],
 			]
 		];

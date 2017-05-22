@@ -33,6 +33,7 @@ class ServerConfig
 		'feeds.email'         => "author",
 		'feeds.limit'         => "10",
 		'host.dockyard'       => 'shipyard',
+		'host.port'           => '80',
 		'joomla.sampleData'   => "data",
 		'joomla.version'      => "latest",
 		'meta.description'    => "Test installation",

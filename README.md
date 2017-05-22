@@ -85,6 +85,7 @@ An average environment definition will contain just the server, joomla, and data
 Defines settings of the docker host.
 
 - `dockyard` - This setting determines the directory, where the the generated volumes (file systems) are located.
+- `port` - The port, on which the proxy is expected to listen.
 
 ##### `joomla`
 
