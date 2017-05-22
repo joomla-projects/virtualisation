@@ -42,6 +42,9 @@ class Selenium extends AbstractService
 	 */
 	public function prepare()
 	{
+		$template = new Template(__DIR__ . '/template/selenium/docker-compose.yml');
+		$template->write($this->dockyard . '/selenium/docker-compose.yml');
+
 		$dockerPath = $this->dockyard . '/selenium/' . $this->version;
 
 		$testDir = 'tests';
