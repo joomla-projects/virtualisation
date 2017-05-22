@@ -85,7 +85,8 @@ class Joomla extends AbstractService
 		$this->clearDirectory($htdocs);
 		$this->untar($tarball, $htdocs);
 
-		$sourcePath = $htdocs . '/joomla-cms-' . basename($tarball, '.tar.gz');
+		$dirs = glob("$htdocs/*", GLOB_ONLYDIR);
+		$sourcePath = reset($dirs);
 
 		$this->removeDirectory($sourcePath . '/.github');
 
