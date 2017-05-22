@@ -44,15 +44,11 @@ class Selenium extends AbstractService
 		$dockerPath = $this->dockyard . '/selenium/' . $this->version;
 		$template = new Template(__DIR__ . '/template/selenium/behat.yml');
 
-		foreach ($this->configs as $config)
-		{
-			$domain = $config->getDomain();
-			$template->setVariables(
-				[
-					'domain'   => $domain,
-				]
-			);
-			$template->write("$dockerPath/behat.yml");
-		}
+		$template->setVariables(
+			[
+				'domain' => $this->version,
+			]
+		);
+		$template->write("$dockerPath/behat.yml");
 	}
 }
