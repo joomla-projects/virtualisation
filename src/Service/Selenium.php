@@ -42,8 +42,10 @@ class Selenium extends AbstractService
 	public function prepare()
 	{
 		$dockerPath = $this->dockyard . '/selenium/' . $this->version;
-		$template = new Template(__DIR__ . '/template/selenium/behat.yml');
 
+		`cp -R "tests" "$dockerPath/tests"`;
+
+		$template = new Template(__DIR__ . '/template/selenium/behat.yml');
 		$template->setVariables(
 			[
 				'domain' => $this->version,
