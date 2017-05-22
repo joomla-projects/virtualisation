@@ -32,7 +32,16 @@ class Selenium extends AbstractService
 	 */
 	public function getSetup()
 	{
-		return [];
+		$name               = 'selenium-' . $this->version;
+		$dockerPath         = $this->dockyard . '/selenium/' . $this->version;
+		$setup[$name] = [
+			'image'   => 'php',
+			'volumes' => [
+				getcwd() . "/$dockerPath/tests:/tests",
+			],
+		];
+
+		return $setup;
 	}
 
 	/**

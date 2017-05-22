@@ -51,7 +51,10 @@ class Apache extends PhpBase
 		$this->setup[$name]['links']                       = array_unique($this->setup[$name]['links']);
 		$this->setup[$name]['environment']['VIRTUAL_HOST'] = implode(',', $this->setup[$name]['environment']['VIRTUAL_HOST']);
 
-		return $this->setup;
+		return array_merge(
+			$this->setup,
+			parent::getSetup()
+		);
 	}
 
 	/**

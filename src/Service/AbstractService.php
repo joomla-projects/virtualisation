@@ -56,6 +56,22 @@ abstract class AbstractService implements Service
 	}
 
 	/**
+	 * Get the setup (suitable for docker-compose files)
+	 *
+	 * @return  array
+	 */
+	public function getSetup()
+	{
+		$setup = [];
+		foreach ($this->services as $service)
+		{
+			$setup = array_merge($setup, $service->getSetup());
+		}
+
+		return $setup;
+	}
+
+	/**
 	 * Prepare the dockyard
 	 *
 	 * @return  void

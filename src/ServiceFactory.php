@@ -44,6 +44,7 @@ class ServiceFactory
 	public function getWebserver()
 	{
 		$service = $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
+		echo "Adding Selenium\n";
 		$service->addService(new Selenium($this->config));
 
 		return $service;
@@ -73,6 +74,7 @@ class ServiceFactory
 
 		$this->cache[$service][$version] = new $service($version, $this->config);
 
+		echo "Getting service $service:$version\n";
 		return $this->cache[$service][$version];
 	}
 
