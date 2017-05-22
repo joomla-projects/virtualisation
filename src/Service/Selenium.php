@@ -10,6 +10,7 @@ namespace Joomla\Virtualisation\Service;
 
 use Joomla\Virtualisation\ServerConfig;
 use Joomla\Virtualisation\Template;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Selenium
@@ -43,14 +44,55 @@ class Selenium extends AbstractService
 	{
 		$dockerPath = $this->dockyard . '/selenium/' . $this->version;
 
-		`cp -R "tests" "$dockerPath/tests"`;
+		$testDir = 'tests';
+		$this->injectTests($testDir, $dockerPath . '/tests');
 
-		$template = new Template(__DIR__ . '/template/selenium/behat.yml');
-		$template->setVariables(
-			[
-				'domain' => $this->version,
-			]
+		$behat = array_merge_recursive(
+			$this->getOriginalBehatConfiguration($testDir),
+			$this->getAdditionalBehatConfiguration()
 		);
-		$template->write("$dockerPath/behat.yml");
+		file_put_contents("$dockerPath/tests/behat.yml", Yaml::dump($behat, 4,2));
+	}
+
+	/**
+	 * Inject the tests
+	 *
+	 * @param $path
+	 * @param $dockerPath
+	 *
+	 * @return Template
+	 */
+	protected function injectTests($path, $dockerPath)
+	{
+		$template = new Template($path);
+		$template->write("$dockerPath");
+	}
+
+	/**
+	 * @param $testDir
+	 *
+	 * @return array|mixed
+	 */
+	protected function getOriginalBehatConfiguration($testDir)
+	{
+		$original = [];
+		if (file_exists($testDir . '/behat.yml'))
+		{
+			$original = Yaml::parse(file_get_contents($testDir . '/behat.yml'));
+		}
+
+		return $original;
+	}
+
+	/**
+	 * @return bool|mixed|string
+	 */
+	protected function getAdditionalBehatConfiguration()
+	{
+		$additions = file_get_contents(__DIR__ . '/template/selenium/behat.yml');
+		$additions = str_replace('${domain}', $this->version, $additions);
+		$additions = Yaml::parse($additions);
+
+		return $additions;
 	}
 }
