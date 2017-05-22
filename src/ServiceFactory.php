@@ -8,7 +8,9 @@
 
 namespace Joomla\Virtualisation;
 
+use Joomla\Virtualisation\Service\AbstractService;
 use Joomla\Virtualisation\Service\Map;
+use Joomla\Virtualisation\Service\Selenium;
 use Joomla\Virtualisation\Service\Service;
 
 /**
@@ -41,15 +43,19 @@ class ServiceFactory
 
 	public function getWebserver()
 	{
-		return $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
+		$service = $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
+		$service->addService(new Selenium($this->config));
+
+		return $service;
 	}
 
 	/**
-	 * @param $server
+	 * @param        $server
+	 * @param string $version
 	 *
-	 * @return mixed
+	 * @return AbstractService
 	 */
-	private function getService($server, $version)
+	private function getService($server, $version = 'latest')
 	{
 		$service = Map::getClass($server);
 

@@ -65,6 +65,8 @@ class Apache extends PhpBase
 
 		$this->createDockerfile($dockerPath, __DIR__ . '/docker/apache');
 		$this->createVhosts($dockerPath);
+
+		parent::prepare();
 	}
 
 	/**

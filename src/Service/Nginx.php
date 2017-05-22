@@ -63,9 +63,18 @@ class Nginx extends AbstractService
 	 */
 	public function prepare()
 	{
-		$name       = 'nginx-' . $this->version;
-		$dockerPath = $this->dockyard . '/docker/' . $name;
+		$dockerPath = $this->dockyard . '/docker/' . 'nginx-' . $this->version;
 
+		$this->createVhosts($dockerPath);
+
+		parent::prepare();
+	}
+
+	/**
+	 * @param $dockerPath
+	 */
+	protected function createVhosts($dockerPath)
+	{
 		$template = new Template(__DIR__ . '/template/nginx/vhost.conf');
 
 		foreach ($this->configs as $config)
@@ -74,7 +83,7 @@ class Nginx extends AbstractService
 			$template->setVariables(
 				[
 					'domain'   => $domain,
-					'name'     => $name,
+					'name'     => 'nginx-' . $this->version,
 					'php.host' => $this->fixName('php-' . $config->getVersion('php')),
 					'php.port' => '9000',
 				]

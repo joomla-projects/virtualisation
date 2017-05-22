@@ -19,17 +19,10 @@ namespace Joomla\Virtualisation\Service;
 abstract class Map
 {
 	private static $typeMapping = [
-		'apache'     => 'apache',
-		'nginx'      => 'nginx',
-		'postgresql' => 'postgresql',
 		'pgsql'      => 'postgresql',
 		'pdopgsql'   => 'postgresql',
-		'mysql'      => 'mysql',
 		'mysqli'     => 'mysql',
 		'pdomysql'   => 'mysql',
-		'php'        => 'php',
-		'joomla'     => 'joomla',
-		'proxy'      => 'proxy',
 	];
 
 	private static $classMapping = [
@@ -40,22 +33,30 @@ abstract class Map
 		'php'        => '\\Joomla\\Virtualisation\\Service\\PhpFpm',
 		'joomla'     => '\\Joomla\\Virtualisation\\Service\\Joomla',
 		'proxy'      => '\\Joomla\\Virtualisation\\Service\\Proxy',
+		'selenium'   => '\\Joomla\\Virtualisation\\Service\\Selenium',
 	];
 
 	public static function getClass($type)
 	{
-		return self::$classMapping[self::getType($type)];
+		$type = self::getType($type);
+
+		if (!isset(self::$classMapping[$type]))
+		{
+			throw new \RuntimeException("Unknown service type $type");
+		}
+
+		return self::$classMapping[$type];
 	}
 
 	public static function getType($type)
 	{
 		$type = strtolower($type);
 
-		if (!isset(self::$typeMapping[$type]))
+		if (isset(self::$typeMapping[$type]))
 		{
-			throw new \RuntimeException("Unknown service type $type");
+			$type = self::$typeMapping[$type];
 		}
 
-		return self::$typeMapping[$type];
+		return $type;
 	}
 }

@@ -33,6 +33,11 @@ abstract class AbstractService implements Service
 	 */
 	protected $dockyard;
 
+	/**
+	 * @var Service[]
+	 */
+	protected $services;
+
 	public function __construct($version, ServerConfig $config)
 	{
 		$this->version  = $version;
@@ -43,6 +48,24 @@ abstract class AbstractService implements Service
 	public function addConfiguration(ServerConfig $config)
 	{
 		$this->configs[] = $config;
+	}
+
+	public function addService(Service $service)
+	{
+		$this->services[] = $service;
+	}
+
+	/**
+	 * Prepare the dockyard
+	 *
+	 * @return  void
+	 */
+	public function prepare()
+	{
+		foreach ($this->services as $service)
+		{
+			$service->prepare();
+		}
 	}
 
 	/**

@@ -1,0 +1,9 @@
+default:
+  extensions:
+    Behat\MinkExtension:
+      base_url:  '${domain}'
+      default_session: selenium2
+      browser_name: 'firefox'
+      selenium2:
+        capabilities: {"browser": "firefox"}
+
