@@ -1,0 +1,6 @@
+<environment name="j-3.7-5.6">
+    <joomla version="3.7"/>
+    <server type="apache"/>
+    <php version="5.6"/>
+    <database driver="mysql" name="joomla3" prefix="j-3.7-5.6_"/>
+</environment>

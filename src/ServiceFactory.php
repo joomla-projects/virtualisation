@@ -64,16 +64,23 @@ class ServiceFactory
 			$version = 'latest';
 		}
 
-		if (isset($this->cache[$service][$version]))
-		{
-			$this->cache[$service][$version]->addConfiguration($this->config);
+		$cacheVersion = $version;
 
-			return $this->cache[$service][$version];
+		if ($server == "apache")
+		{
+			$cacheVersion = $version . "_" . $this->config->getVersion('php');
 		}
 
-		$this->cache[$service][$version] = new $service($version, $this->config);
+		if (isset($this->cache[$service][$cacheVersion]))
+		{
+			$this->cache[$service][$cacheVersion]->addConfiguration($this->config);
 
-		return $this->cache[$service][$version];
+			return $this->cache[$service][$cacheVersion];
+		}
+
+		$this->cache[$service][$cacheVersion] = new $service($version, $this->config);
+
+		return $this->cache[$service][$cacheVersion];
 	}
 
 	public function getProxyServer()

@@ -2,3 +2,7 @@
 /dockyard/
 cache/
 /assets/setup.dia
+.idea
+/dockyard_testing/
+.DS_Store
+/tests-container/docker-apache/
