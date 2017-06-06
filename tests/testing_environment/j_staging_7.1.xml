@@ -1,0 +1,6 @@
+<environment name="j-staging-7.1">
+    <joomla version="staging"/>
+    <server type="apache"/>
+    <php version="7.1"/>
+    <database driver="mysql" name="joomla3" prefix="j-staging-7.1_"/>
+</environment>

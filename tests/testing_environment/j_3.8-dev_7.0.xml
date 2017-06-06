@@ -1,0 +1,6 @@
+<environment name="j-3.8-dev-7.0">
+    <joomla version="3.8-dev"/>
+    <server type="apache"/>
+    <php version="7.0"/>
+    <database driver="mysql" name="joomla3" prefix="j-3.8-dev-7.0_"/>
+</environment>
