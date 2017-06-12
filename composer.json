@@ -33,24 +33,24 @@
       "phpunit --testdox"
     ],
     "build": [
-      "rm -rf dockyard/*",
-      "phpunit tests/DockerComposeGeneratorTest",
-      "cd dockyard && docker-compose build",
+      "rm -rf dockyard_testing/*",
+      "phpunit tests/TestingDockerComposeGeneratorTest",
+      "cd dockyard_testing && docker-compose build",
       "cd .."
     ],
     "start": [
-      "cd dockyard && docker-compose up -d",
+      "cd dockyard_testing && docker-compose up -d",
       "cd .."
     ],
     "stop": [
-      "cd dockyard && docker-compose stop",
+      "cd dockyard_testing && docker-compose stop",
       "cd .."
     ],
     "clean": [
       "@stop",
-      "cd dockyard && docker-compose down",
+      "cd dockyard_testing && docker-compose down",
       "cd ..",
-      "rm -rf dockyard/*"
+      "rm -rf dockyard_testing/*"
     ]
   }
 }

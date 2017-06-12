@@ -1,0 +1,6 @@
+<environment name="jstaging-70">
+    <joomla version="staging"/>
+    <server type="apache"/>
+    <php version="7.0"/>
+    <database driver="mysqli" name="joomlastaging" prefix="jstaging_70_"/>
+</environment>

@@ -1,0 +1,6 @@
+<environment name="j37-71">
+    <joomla version="3.7"/>
+    <server type="apache"/>
+    <php version="7.1"/>
+    <database driver="mysqli" name="joomla37" prefix="j37_71_"/>
+</environment>
