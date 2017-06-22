@@ -20,6 +20,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DockerComposeGenerator
 {
+//	use \Joomla\Testing\Robo\Tasks\loadTasks;
+//	use \Robo\Task\Composer\loadTasks;
 	/**
 	 * @var  string
 	 */
@@ -39,12 +41,38 @@ class DockerComposeGenerator
 
 	public function write($filename)
 	{
-		$xmlFiles = array_diff(scandir($this->path), ['.', '..', 'database.xml', 'default.xml']);
-		$services = $this->getCombinedSetup($this->getServices($xmlFiles));
+		$xmlFiles = array_diff(scandir($this->path), ['.', '..', 'database.xml', 'default.xml', 'network.xml', 'selenium.xml']);
 
-		file_put_contents($filename, Yaml::dump($services, 4, 2));
+		$this->getServices($xmlFiles);
+
+		$this->addSelenium($this->path . '/selenium.xml');
+
+		$services = $this->getCombinedSetup($this->servers);
+
+		$network = $this->getNetworkInfo($this->path . '/network.xml');
+
+		$compose = array(
+			'version' => '3',
+			'networks' => array($network['name'] => array('driver' => $network['driver'])),
+			'services' => $services,
+		);
+
+		file_put_contents($filename, Yaml::dump($compose, 4, 2));
 
 		return $this->getHostInfo($services);
+	}
+
+	public function getNetworkInfo($networkXmlPath)
+	{
+		$network = [];
+
+		$xml = simplexml_load_file($networkXmlPath);
+
+		foreach ($xml->attributes() as $key => $attribute)
+		{
+			$network[$key] = (string) $attribute;
+		}
+		return $network;
 	}
 
 	/**
@@ -103,6 +131,40 @@ class DockerComposeGenerator
 		return $this->servers;
 	}
 
+	protected function addSelenium($seleniumXmlPath){
+		$factory	= new ServiceFactory();
+		$config 	= new ServerConfig($seleniumXmlPath);
+
+//		$dockerPath = $config->get('host.dockyard') . '/selenium/' . $config->get('selenium.version');
+//
+//		$taskCMSSetup = $this->taskCMSSetup()
+//			->setBaseTestsPath($dockerPath)
+//			->setCmsRepository($config->get('weblinks.repoOwner') . '/' . $config->get('weblinks.repoName'))
+//			->setCmsPath('extension');
+//
+//		if (!empty($config->get('weblinks.repoBranch')))
+//		{
+//			$taskCMSSetup->setCmsBranch($config->get('weblinks.repoBranch'));
+//		}
+//
+//		$taskCMSSetup->cloneCMSRepository()
+//			->setupCMSPath()
+//			->run()
+//			->stopOnFail();
+//
+//		// Installs composer dependencies prior to tests
+//		$this->taskComposerInstall(__DIR__ . '/composer.phar')
+//			->option('working-dir', $dockerPath . '/extension/tests')
+//			->preferDist()
+//			->run();
+		$no = $config->get("selenium.no");
+		for ($i=0; $i<$no; $i++){
+			$config->setSeleniumNo($i);
+			$factory->setConfiguration($config);
+			$this->registerServer($factory->getSeleniumServer());
+		}
+	}
+
 	/**
 	 * @param $server
 	 */
@@ -112,7 +174,6 @@ class DockerComposeGenerator
 		{
 			return;
 		}
-
 		$this->servers[spl_object_hash($server)] = $server;
 	}
 

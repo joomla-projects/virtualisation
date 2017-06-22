@@ -61,6 +61,12 @@ class ServerConfig
 		'server.type'         => "nginx",
 		'session.handler'     => "database",
 		'session.lifetime'    => "15",
+		'network.name'		  => "joomla",
+		'selenium.no'		  => "1",
+		'selenium.version'	  => "latest",
+		'weblinks.repoOwner'  => "joomla",
+		'weblinks.repoName'   => "weblinks",
+		'weblinks.repoBranch' => "container-test",
 	];
 
 	/**
@@ -149,5 +155,10 @@ class ServerConfig
 		}
 
 		return $this->config[$key];
+	}
+
+	public function setSeleniumNo($no)
+	{
+		$this->config["selenium.no"] = $no;
 	}
 }

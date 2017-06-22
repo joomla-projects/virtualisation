@@ -1,0 +1,5 @@
+<environment>
+    <selenium no="4" version="latest"/>
+    <weblinks repoOwner="isacandrei" repoName="weblinks" repoBranch="container-test"/>
+    <network name="joomla"/>
+</environment>

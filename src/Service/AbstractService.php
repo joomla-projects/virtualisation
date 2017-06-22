@@ -38,10 +38,13 @@ abstract class AbstractService implements Service
 	 */
 	protected $services;
 
+	protected $network;
+
 	public function __construct($version, ServerConfig $config)
 	{
 		$this->version  = $version;
 		$this->dockyard = $config->get('host.dockyard');
+		$this->network  = $config->get('network.name');
 		$this->addConfiguration($config);
 	}
 

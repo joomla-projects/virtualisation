@@ -25,7 +25,9 @@ class Apache extends PhpBase
 	 */
 	public function getSetup()
 	{
-		$name               = 'apache-' . $this->version;
+		$config = $this->configs[0];
+
+		$name               = 'apache-' . $this->version . '-' . $config->getVersion('joomla');
 		$dockerPath         = $this->dockyard . '/docker/' . $name;
 		$this->setup[$name] = [
 			'build'       => 'docker/' . $name,
@@ -40,21 +42,20 @@ class Apache extends PhpBase
 			],
 		];
 
-		foreach ($this->configs as $config)
-		{
-			$driver                                              = Map::getType($config->get('database.driver'));
-			$version                                             = $config->getVersion('database');
-			$this->setup[$name]['links'][]                       = "$driver-$version";
-			$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $config->getDomain();
-		}
+		$driver                                              = Map::getType($config->get('database.driver'));
+		$version                                             = $config->getVersion('database');
+		$this->setup[$name]['links'][]                       = "$driver-$version";
+		$this->setup[$name]['environment']['VIRTUAL_HOST'][] = $config->getDomain();
+		$this->setup[$name]['networks'][] 				     = $this->network;
 
 		$this->setup[$name]['links']                       = array_unique($this->setup[$name]['links']);
 		$this->setup[$name]['environment']['VIRTUAL_HOST'] = implode(',', $this->setup[$name]['environment']['VIRTUAL_HOST']);
 
-		return array_merge(
-			$this->setup,
-			parent::getSetup()
-		);
+//		return array_merge(
+//			$this->setup,
+//			parent::getSetup()
+//		);
+		return $this->setup;
 	}
 
 	/**
@@ -64,12 +65,13 @@ class Apache extends PhpBase
 	 */
 	public function prepare()
 	{
-		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version;
+		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version . "-" .
+							$this->configs[0]->getVersion('joomla');
 
 		$this->createDockerfile($dockerPath, __DIR__ . '/docker/apache');
 		$this->createVhosts($dockerPath);
 
-		parent::prepare();
+//		parent::prepare();
 	}
 
 	/**

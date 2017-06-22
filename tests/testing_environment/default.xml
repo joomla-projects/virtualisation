@@ -9,4 +9,5 @@
     <sef enabled="0" rewrite="0" suffix="0" unicode="0"/>
     <feeds limit="10" email="author"/>
     <session lifetime="15" handler="database"/>
+    <network name="joomla"/>
 </environment>

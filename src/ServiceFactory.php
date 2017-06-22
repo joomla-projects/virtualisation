@@ -44,7 +44,7 @@ class ServiceFactory
 	public function getWebserver()
 	{
 		$service = $this->getService($this->config->get('server.type'), $this->config->getVersion('server'));
-		$service->addService(new Selenium($this->config));
+//		$service->addService(new Selenium($this->config));
 
 		return $service;
 	}
@@ -68,7 +68,11 @@ class ServiceFactory
 
 		if ($server == "apache")
 		{
-			$cacheVersion = $version . "_" . $this->config->getVersion('php');
+			$cacheVersion = $version . "_" . $this->config->getVersion('php') . "_" . $this->config->getVersion('joomla');
+		}
+
+		if ($server == "selenium-container"){
+			$cacheVersion = $version . "_" . $this->config->get('selenium.no');
 		}
 
 		if (isset($this->cache[$service][$cacheVersion]))
@@ -105,5 +109,10 @@ class ServiceFactory
 	public function getApplication()
 	{
 		return $this->getService('joomla', $this->config->getVersion('joomla'));
+	}
+
+	public function getSeleniumServer()
+	{
+		return $this->getService('selenium-container', 'latest');
 	}
 }
