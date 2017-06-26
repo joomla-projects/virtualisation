@@ -31,6 +31,7 @@ class Proxy extends AbstractService
 				'image'   => 'jwilder/nginx-proxy:alpine',
 				'ports'   => ["$port:80"],
 				'volumes' => ['/var/run/docker.sock:/tmp/docker.sock:ro'],
+				'network' => [$this->network],
 			]
 		];
 	}

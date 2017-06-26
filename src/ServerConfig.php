@@ -64,9 +64,7 @@ class ServerConfig
 		'network.name'		  => "joomla",
 		'selenium.no'		  => "1",
 		'selenium.version'	  => "latest",
-		'weblinks.repoOwner'  => "joomla",
-		'weblinks.repoName'   => "weblinks",
-		'weblinks.repoBranch' => "container-test",
+		'extension.path'	  => "../../../weblinks/"
 	];
 
 	/**
