@@ -36,7 +36,7 @@
     ],
     "build": [
       "rm -rf dockyard/*",
-      "phpunit tests/TestingDockerComposeGeneratorTest",
+      "phpunit tests/DockerComposeGeneratorTest",
       "cd dockyard && docker-compose build",
       "cd .."
     ],

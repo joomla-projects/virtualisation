@@ -1,6 +1,0 @@
-<environment name="j3-postgresql-19">
-    <joomla version="3"/>
-    <server type="nginx" version="1.9"/>
-    <php version="7.1"/>
-    <database driver="postgresql" prefix="j3px_"/>
-</environment>
