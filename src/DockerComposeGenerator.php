@@ -20,8 +20,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DockerComposeGenerator
 {
-//	use \Joomla\Testing\Robo\Tasks\loadTasks;
-//	use \Robo\Task\Composer\loadTasks;
 	/**
 	 * @var  string
 	 */
@@ -62,7 +60,86 @@ class DockerComposeGenerator
 		return $this->getHostInfo($services);
 	}
 
-	public function getNetworkInfo($networkXmlPath)
+	/**
+	 * @param $env
+	 */
+	public function generateFromConfig(
+		$env = array(
+			'php' => ['5.4', '5.5', '5.6', '7.0', '7.1'],
+			'joomla' => ['3.7', '3.8-dev', 'staging'],
+			'selenium.no' => 3,
+			'extension.path' => __DIR__ . '/../../weblinks',
+		)
+	)
+	{
+		$filename = 'dockyard/docker-compose.yml';
+
+		$fixName  = function ($name)
+		{
+			return str_replace(['.', '-'], ['', ''], $name);
+		};
+
+		// getServices
+		$this->servers = [];
+		$factory       = new ServiceFactory();
+
+		foreach ($env['php'] as $php)
+		{
+			foreach ($env['joomla'] as $joomla)
+			{
+				$config = array
+				(
+				'name' 				=> 'j' . $fixName($joomla) . '-' . $fixName($php),
+    			'joomla.version' 	=> $joomla,
+				'php.version'		=> $php,
+				'database.prefix'	=> 'j' . $fixName($joomla) . '_' . $fixName($php) . '_',
+				);
+
+				var_dump('j' . $fixName($joomla) . '_' . $fixName($php) . '_');
+
+				$config = (new ServerConfig)->loadFromConfig($config, $this->path);
+				$factory->setConfiguration($config);
+
+				$this->registerServer($factory->getProxyServer());
+				$this->registerServer($factory->getWebserver());
+				$this->registerServer($factory->getDatabaseServer());
+				$this->registerServer($factory->getPhpServer());
+				$this->registerServer($factory->getApplication());
+			}
+		}
+
+		//addSelenium
+		$config 	= (new ServerConfig)->loadFromConfig(array(
+			'extension.path' => $env['extension.path']
+			), $this->path);
+
+		$no = $env['selenium.no'];
+		for ($i=0; $i<$no; $i++){
+			$config->setSeleniumNo($i);
+			$factory->setConfiguration($config);
+			$this->registerServer($factory->getSeleniumServer());
+		}
+
+		$services = $this->getCombinedSetup($this->servers);
+
+		$network = $this->getNetworkInfo($this->path . '/network.xml');
+
+		$compose = array(
+			'version' => '3',
+			'networks' => array($network['name'] => array('driver' => $network['driver'])),
+			'services' => $services,
+		);
+
+		file_put_contents($filename, Yaml::dump($compose, 4, 2));
+
+	}
+
+	/**
+	 * @param $networkXmlPath
+	 *
+	 * @return array
+	 */
+	protected function getNetworkInfo($networkXmlPath)
 	{
 		$network = [];
 
@@ -118,7 +195,7 @@ class DockerComposeGenerator
 
 		foreach ($xmlFiles as $file)
 		{
-			$config = new ServerConfig($this->path . '/' . $file);
+			$config = (new ServerConfig)->loadFromFile($this->path . '/' . $file);
 			$factory->setConfiguration($config);
 
 			$this->registerServer($factory->getProxyServer());
@@ -133,30 +210,8 @@ class DockerComposeGenerator
 
 	protected function addSelenium($seleniumXmlPath){
 		$factory	= new ServiceFactory();
-		$config 	= new ServerConfig($seleniumXmlPath);
+		$config 	= (new ServerConfig)->loadFromFile($seleniumXmlPath);
 
-//		$dockerPath = $config->get('host.dockyard') . '/selenium/' . $config->get('selenium.version');
-//
-//		$taskCMSSetup = $this->taskCMSSetup()
-//			->setBaseTestsPath($dockerPath)
-//			->setCmsRepository($config->get('weblinks.repoOwner') . '/' . $config->get('weblinks.repoName'))
-//			->setCmsPath('extension');
-//
-//		if (!empty($config->get('weblinks.repoBranch')))
-//		{
-//			$taskCMSSetup->setCmsBranch($config->get('weblinks.repoBranch'));
-//		}
-//
-//		$taskCMSSetup->cloneCMSRepository()
-//			->setupCMSPath()
-//			->run()
-//			->stopOnFail();
-//
-//		// Installs composer dependencies prior to tests
-//		$this->taskComposerInstall(__DIR__ . '/composer.phar')
-//			->option('working-dir', $dockerPath . '/extension/tests')
-//			->preferDist()
-//			->run();
 		$no = $config->get("selenium.no");
 		for ($i=0; $i<$no; $i++){
 			$config->setSeleniumNo($i);

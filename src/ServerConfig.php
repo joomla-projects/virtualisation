@@ -69,16 +69,39 @@ class ServerConfig
 
 	/**
 	 * ServerConfig constructor.
-	 *
-	 * @param   string $filename The path to the configuration file.
 	 */
-	public function __construct($filename)
+	public function __construct() {}
+
+	/**
+	 * @param $filename string $filename The path to the configuration file.
+	 *
+	 * @return ServerConfig
+	 */
+	public function loadFromFile($filename)
 	{
 		$path = dirname($filename);
 
 		$this->config = array_merge($this->config, $this->read($path . '/default.xml'));
 		$this->config = array_merge($this->config, $this->read($path . '/database.xml'));
 		$this->config = array_merge($this->config, $this->read($filename));
+
+		return $this;
+	}
+
+	/**
+	 * @param $config
+	 * @param $path
+	 *
+	 * @return ServerConfig
+	 */
+	public function loadFromConfig($config, $path)
+	{
+		$this->config = array_merge($this->config, $this->read($path . '/default.xml'));
+		$this->config = array_merge($this->config, $this->read($path . '/database.xml'));
+		$this->config = array_merge($this->config, $this->read($path . '/selenium.xml'));
+		$this->config = array_merge($this->config, $config);
+
+		return $this;
 	}
 
 	/**

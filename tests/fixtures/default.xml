@@ -1,7 +1,7 @@
 <environment name="default">
     <host dockyard="dockyard" port="8080"/>
     <joomla version="3" sampleData="testing"/>
-    <database driver="mysql" name="joomla3" prefix="j3m_"/>
+    <database driver="mysqli" name="joomla3"/>
     <server type="apache"/>
     <cache enabled="0" time="15" handler="file"/>
     <debug system="1" language="1"/>

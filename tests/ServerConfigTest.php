@@ -19,7 +19,7 @@ class ServerConfigTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->config = new ServerConfig(__DIR__ . '/fixtures/j3x.xml');
+		$this->config = (new ServerConfig)->loadFromFile(__DIR__ . '/fixtures/j3x.xml');
 	}
 
 	public function testConfigurationIsRead()
