@@ -227,6 +227,7 @@ class DockerComposeGenerator
 		{
 			return;
 		}
+
 		$this->servers[spl_object_hash($server)] = $server;
 	}
 
