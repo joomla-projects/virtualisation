@@ -95,8 +95,6 @@ class DockerComposeGenerator
 				'database.prefix'	=> 'j' . $fixName($joomla) . '_' . $fixName($php) . '_',
 				);
 
-				var_dump('j' . $fixName($joomla) . '_' . $fixName($php) . '_');
-
 				$config = (new ServerConfig)->loadFromConfig($config, $this->path);
 				$factory->setConfiguration($config);
 

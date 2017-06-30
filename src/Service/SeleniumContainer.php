@@ -32,11 +32,11 @@ class SeleniumContainer extends AbstractService
 	public function getSetup()
 	{
 		$name               = 'selenium-' . $this->no;
-		$dockerPath         = $this->dockyard . '/selenium/' . $this->version;
+		$extensionPath      = $this->configs[0]->get("extension.path");
 		$setup[$name] = [
 			'image'   => 'joomlaprojects/joomla-testing-client-firefox:' . $this->version,
 			'volumes' => [
-				getcwd() . "/$dockerPath/extension:/usr/src/tests",
+				"$extensionPath:/usr/src/tests",
 			],
 		];
 		$setup[$name]['networks'][]  = $this->network;
