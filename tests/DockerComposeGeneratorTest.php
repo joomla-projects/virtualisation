@@ -15,7 +15,7 @@ class DockerComposeGeneratorTest extends ServiceTestCase
 {
 	public function testTheGeneratedFileContainsCorrectBuildInstructions()
 	{
-		$generator = new DockerComposeGenerator('tests/fixtures');
+		$generator = new DockerComposeGenerator('tests/fixtures_parallel_testing');
 		$generator->write('dockyard/docker-compose.yml');
 
 	}

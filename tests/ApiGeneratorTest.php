@@ -21,7 +21,7 @@ class ApiGeneratorTest extends ServiceTestCase
 			'selenium.no' => 3,
 			'extension.path' => __DIR__ . '/../../weblinks',
 		);
-		$generator = new DockerComposeGenerator('tests/fixtures');
+		$generator = new DockerComposeGenerator('tests/fixtures_parallel_testing');
 		$generator->generateFromConfig($env);
 
 	}

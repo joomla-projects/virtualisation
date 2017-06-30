@@ -1,0 +1,6 @@
+<environment name="j25-mysqli">
+    <joomla version="2.5" sampleData="data"/>
+    <server type="apache"/>
+    <php version="5.4"/>
+    <database driver="mysqli" name="joomla25" prefix="j2m_"/>
+</environment>

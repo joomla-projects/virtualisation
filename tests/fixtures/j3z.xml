@@ -1,0 +1,4 @@
+<environment name="j3-mysql">
+    <joomla version="3"/>
+    <database driver="mysqli" prefix="j3p_"/>
+</environment>
