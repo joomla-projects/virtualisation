@@ -9,20 +9,18 @@
 namespace Joomla\Tests\Virtualisation;
 
 use Joomla\Tests\Virtualisation\Service\ServiceTestCase;
-use Joomla\Virtualisation\DockerComposeGenerator;
+use Joomla\Virtualisation\DockerComposeGeneratorApi;
 
 class ApiGeneratorTest extends ServiceTestCase
 {
 	public function testTheApiGenerator()
 	{
 		$env = array(
-			'php' => ['5.4'],
-			'joomla' => ['3.7', '3.8-dev', 'staging'],
+			'php' => ['5.4', '5.5', '5.6', '7.0', '7.1'],
+			'joomla' => ['3.6'],
 			'selenium.no' => 3,
 			'extension.path' => __DIR__ . '/../../weblinks',
 		);
-		$generator = new DockerComposeGenerator('tests/fixtures_parallel_testing');
-		$generator->generateFromConfig($env);
-
+		(new DockerComposeGeneratorApi())->generateFromConfig($env);
 	}
 }
