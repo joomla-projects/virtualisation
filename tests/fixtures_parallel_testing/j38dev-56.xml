@@ -1,0 +1,6 @@
+<environment name="j38dev-56">
+    <joomla version="3.8-dev"/>
+    <server type="apache"/>
+    <php version="5.6"/>
+    <database driver="mysqli" name="joomla38dev" prefix="j38dev_56_"/>
+</environment>

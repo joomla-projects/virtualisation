@@ -43,6 +43,8 @@ class MySql extends AbstractService
 			],
 		];
 
+		$this->setup[$name]['networks'][]  = $this->network;
+
 		return $this->setup;
 	}
 

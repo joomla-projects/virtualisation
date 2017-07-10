@@ -34,6 +34,7 @@ abstract class Map
 		'joomla'     => '\\Joomla\\Virtualisation\\Service\\Joomla',
 		'proxy'      => '\\Joomla\\Virtualisation\\Service\\Proxy',
 		'selenium'   => '\\Joomla\\Virtualisation\\Service\\Selenium',
+		'selenium-container'   => '\\Joomla\\Virtualisation\\Service\\SeleniumContainer',
 	];
 
 	public static function getClass($type)

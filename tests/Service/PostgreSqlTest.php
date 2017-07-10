@@ -22,7 +22,7 @@ class PostgreSqlTest extends ServiceTestCase
 	public function setUp()
 	{
 		$serverFactory = new ServiceFactory();
-		$serverFactory->setConfiguration(new ServerConfig(__DIR__ . '/../fixtures/j3x.xml'));
+		$serverFactory->setConfiguration((new ServerConfig)->loadFromFile(__DIR__ . '/../fixtures/j3x.xml'));
 		$this->service = $serverFactory->getDatabaseServer();
 	}
 

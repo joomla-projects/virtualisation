@@ -1,0 +1,5 @@
+<environment>
+    <selenium no="4" version="latest"/>
+    <extension path="weblinks"/>
+    <network name="joomla"/>
+</environment>

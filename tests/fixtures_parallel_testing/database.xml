@@ -1,0 +1,3 @@
+<database>
+    <mysql version="latest" name="joomla_test" user="sqladmin" password="sqladmin" rootPassword="root"/>
+</database>

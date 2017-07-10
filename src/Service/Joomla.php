@@ -43,6 +43,12 @@ class Joomla extends AbstractService
 		$htdocs   = $this->dockyard . '/' . $name;
 		$template = new Template($this->prepareSource($htdocs));
 
+//		$userData = substr($name, 0, 8);
+//		if ($name == "joomla-staging")
+//		{
+			$userData = "joomla-3";
+//		}
+
 		foreach ($this->configs as $config)
 		{
 			$domain      = $config->getDomain();
@@ -60,6 +66,8 @@ class Joomla extends AbstractService
 			{
 				$this->appendSql('sample_' . $sampleData . '.sql', $destination, $config);
 			}
+
+			$this->appendUserSql($userData, $config);
 
 			$this->updateConfiguration($config, $destination);
 			$this->removeDirectory($destination . '/installation');
@@ -267,7 +275,7 @@ class Joomla extends AbstractService
 	{
 		$path    = $config->get('host.dockyard') . '/docker';
 		$server  = $config->get('server.type');
-		$version = $server == 'apache' ? $config->getVersion('php') : $config->getVersion('server');
+		$version = $server == 'apache' ? $config->getVersion('php') . '-' . $config->getVersion('joomla') : $config->getVersion('server');
 
 		return "$path/$server-$version";
 	}
@@ -291,6 +299,44 @@ class Joomla extends AbstractService
 		if (!file_exists($installationData))
 		{
 			throw new \Exception("Joomla! $this->version does not provide '$filename' for $databaseEngine.");
+		}
+
+		$sql = str_replace('#__', $config->get('database.prefix'), file_get_contents($installationData));
+		if ($databaseEngine == 'postgresql')
+		{
+			// Fix escaping
+			$sql = str_replace("\\'", "''", $sql);
+			file_put_contents("$databaseDir/$databaseName.dump", $sql, FILE_APPEND);
+
+			$databaseUser = $config->get('postgresql.user');
+			$script = "psql -v ON_ERROR_STOP=1 --username=\"$databaseUser\" --dbname=\"$databaseName\" --file=\"/docker-entrypoint-initdb.d/$databaseName.dump\"\n";
+
+			file_put_contents("$databaseDir/10-$databaseName.sh", $script);
+
+			return;
+		}
+
+		file_put_contents("$databaseDir/$databaseName.sql", $sql, FILE_APPEND);
+	}
+
+	/**
+	 * @param string       $filename
+	 * @param ServerConfig $config
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	protected function appendUserSql($filename, $config)
+	{
+		$databaseEngine   = Map::getType($config->get('database.driver'));
+		$databaseName     = $config->get('database.name');
+		$databaseVersion  = $config->getVersion($databaseEngine);
+		$databaseDir      = $this->dockyard . '/' . $databaseEngine . '-' . $databaseVersion;
+		$installationData = __DIR__ . '/template/' . $databaseEngine. '/' . $filename . '.sql';
+
+		if (!file_exists($installationData))
+		{
+			throw new \Exception("There is no user data provided for '$filename' for $databaseEngine.");
 		}
 
 		$sql = str_replace('#__', $config->get('database.prefix'), file_get_contents($installationData));

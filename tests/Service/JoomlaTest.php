@@ -22,7 +22,7 @@ class JoomlaTest extends ServiceTestCase
 	public function setUp()
 	{
 		$serverFactory = new ServiceFactory();
-		$serverFactory->setConfiguration(new ServerConfig(__DIR__ . '/../fixtures/j25.xml'));
+		$serverFactory->setConfiguration((new ServerConfig)->loadFromFile(__DIR__ . '/../fixtures/j25.xml'));
 		$this->service = $serverFactory->getApplication();
 	}
 

@@ -24,7 +24,7 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->factory = new ServiceFactory();
-		$this->factory->setConfiguration(new ServerConfig(__DIR__ . '/fixtures/j3x.xml'));
+		$this->factory->setConfiguration((new ServerConfig)->loadFromFile(__DIR__ . '/fixtures/j3x.xml'));
 	}
 
 	public function testServiceFactoryReturnsTheConfiguredWebserver()
@@ -51,7 +51,7 @@ class ServiceFactoryTest extends \PHPUnit_Framework_TestCase
 	{
 		$webserver1 = $this->factory->getWebserver();
 
-		$this->factory->setConfiguration(new ServerConfig(__DIR__ . '/fixtures/j3y.xml'));
+		$this->factory->setConfiguration((new ServerConfig)->loadFromFile(__DIR__ . '/fixtures/j3y.xml'));
 		$webserver2 = $this->factory->getWebserver();
 
 		$this->assertNotSame($webserver1, $webserver2);
