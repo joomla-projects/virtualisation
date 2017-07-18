@@ -4,7 +4,7 @@
     <database driver="mysqli" name="joomla3"/>
     <server type="apache"/>
     <cache enabled="0" time="15" handler="file"/>
-    <debug system="1" language="1"/>
+    <debug system="0" language="0"/>
     <meta description="Test installation" keywords="" showVersion="1" showTitle="1" showAuthor="1"/>
     <sef enabled="0" rewrite="0" suffix="0" unicode="0"/>
     <feeds limit="10" email="author"/>
