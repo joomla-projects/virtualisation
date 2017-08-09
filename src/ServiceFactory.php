@@ -115,4 +115,9 @@ class ServiceFactory
 	{
 		return $this->getService('selenium-container', 'latest');
 	}
+
+	public function getMemcached()
+	{
+		return $this->getService('memcached', 'latest');
+	}
 }

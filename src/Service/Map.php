@@ -26,15 +26,16 @@ abstract class Map
 	];
 
 	private static $classMapping = [
-		'apache'     => '\\Joomla\\Virtualisation\\Service\\Apache',
-		'nginx'      => '\\Joomla\\Virtualisation\\Service\\Nginx',
-		'postgresql' => '\\Joomla\\Virtualisation\\Service\\PostgreSql',
-		'mysql'      => '\\Joomla\\Virtualisation\\Service\\MySql',
-		'php'        => '\\Joomla\\Virtualisation\\Service\\PhpFpm',
-		'joomla'     => '\\Joomla\\Virtualisation\\Service\\Joomla',
-		'proxy'      => '\\Joomla\\Virtualisation\\Service\\Proxy',
-		'selenium'   => '\\Joomla\\Virtualisation\\Service\\Selenium',
-		'selenium-container'   => '\\Joomla\\Virtualisation\\Service\\SeleniumContainer',
+		'apache'     			=> '\\Joomla\\Virtualisation\\Service\\Apache',
+		'nginx'      			=> '\\Joomla\\Virtualisation\\Service\\Nginx',
+		'postgresql' 			=> '\\Joomla\\Virtualisation\\Service\\PostgreSql',
+		'mysql'      			=> '\\Joomla\\Virtualisation\\Service\\MySql',
+		'php'        			=> '\\Joomla\\Virtualisation\\Service\\PhpFpm',
+		'joomla'     			=> '\\Joomla\\Virtualisation\\Service\\Joomla',
+		'proxy'      			=> '\\Joomla\\Virtualisation\\Service\\Proxy',
+		'selenium'   			=> '\\Joomla\\Virtualisation\\Service\\Selenium',
+		'selenium-container'	=> '\\Joomla\\Virtualisation\\Service\\SeleniumContainer',
+		'memcached'   			=> '\\Joomla\\Virtualisation\\Service\\Memcached',
 	];
 
 	public static function getClass($type)

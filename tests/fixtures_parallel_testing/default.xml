@@ -10,4 +10,5 @@
     <feeds limit="10" email="author"/>
     <session lifetime="15" handler="database"/>
     <network name="joomla"/>
+    <memcached enabled="1" version="latest" port="11211"/>
 </environment>

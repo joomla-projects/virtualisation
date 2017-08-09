@@ -115,10 +115,17 @@ class DockerComposeGenerator
 			), $this->path);
 
 		$no = $env['selenium.no'];
-		for ($i=0; $i<$no; $i++){
+		for ($i=0; $i<$no; $i++)
+		{
 			$config->setSeleniumNo($i);
 			$factory->setConfiguration($config);
 			$this->registerServer($factory->getSeleniumServer());
+		}
+
+		//addMemcached
+		if ($config->get("memcached.enabled"))
+		{
+			$this->registerServer($factory->getMemcached());
 		}
 
 		$services = $this->getCombinedSetup($this->servers);

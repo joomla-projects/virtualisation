@@ -20,6 +20,7 @@ class ApiGeneratorTest extends ServiceTestCase
 			'joomla' => ['3.6'],
 			'selenium.no' => 3,
 			'extension.path' => __DIR__ . '/../../weblinks',
+			'host.dockyard' => "dockyard"
 		);
 		(new DockerComposeGeneratorAPI())->generateFromConfig($env, 'dockyard');
 	}
