@@ -62,6 +62,7 @@ class DockerComposeGenerator
 
 	/**
 	 * @param $env
+	 * @param $dockyardPath
 	 */
 	public function generateFromConfig(
 		$env = array(
@@ -69,10 +70,11 @@ class DockerComposeGenerator
 			'joomla' => ['3.7', '3.8-dev', 'staging'],
 			'selenium.no' => 3,
 			'extension.path' => __DIR__ . '/../../weblinks',
-		)
+		),
+		$dockyardPath
 	)
 	{
-		$filename = 'dockyard/docker-compose.yml';
+		$filename = $dockyardPath . '/docker-compose.yml';
 
 		$fixName  = function ($name)
 		{
@@ -93,6 +95,7 @@ class DockerComposeGenerator
     			'joomla.version' 	=> $joomla,
 				'php.version'		=> $php,
 				'database.prefix'	=> 'j' . $fixName($joomla) . '_' . $fixName($php) . '_',
+					'host.dockyard' => $env['host.dockyard'],
 				);
 
 				$config = (new ServerConfig)->loadFromConfig($config, $this->path);
@@ -112,10 +115,17 @@ class DockerComposeGenerator
 			), $this->path);
 
 		$no = $env['selenium.no'];
-		for ($i=0; $i<$no; $i++){
+		for ($i=0; $i<$no; $i++)
+		{
 			$config->setSeleniumNo($i);
 			$factory->setConfiguration($config);
 			$this->registerServer($factory->getSeleniumServer());
+		}
+
+		//addMemcached
+		if ($config->get("memcached.enabled"))
+		{
+			$this->registerServer($factory->getMemcached());
 		}
 
 		$services = $this->getCombinedSetup($this->servers);
@@ -129,7 +139,6 @@ class DockerComposeGenerator
 		);
 
 		file_put_contents($filename, Yaml::dump($compose, 4, 2));
-
 	}
 
 	/**

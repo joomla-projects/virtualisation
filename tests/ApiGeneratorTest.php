@@ -9,7 +9,7 @@
 namespace Joomla\Tests\Virtualisation;
 
 use Joomla\Tests\Virtualisation\Service\ServiceTestCase;
-use Joomla\Virtualisation\DockerComposeGeneratorApi;
+use Joomla\Virtualisation\DockerComposeGeneratorAPI;
 
 class ApiGeneratorTest extends ServiceTestCase
 {
@@ -20,7 +20,8 @@ class ApiGeneratorTest extends ServiceTestCase
 			'joomla' => ['3.6'],
 			'selenium.no' => 3,
 			'extension.path' => __DIR__ . '/../../weblinks',
+			'host.dockyard' => "dockyard"
 		);
-		(new DockerComposeGeneratorApi())->generateFromConfig($env);
+		(new DockerComposeGeneratorAPI())->generateFromConfig($env, 'dockyard');
 	}
 }
