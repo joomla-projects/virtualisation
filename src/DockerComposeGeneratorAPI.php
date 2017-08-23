@@ -8,8 +8,6 @@
 
 namespace Joomla\Virtualisation;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 class DockerComposeGeneratorAPI extends DockerComposeGenerator
 {
 	public function __construct()
