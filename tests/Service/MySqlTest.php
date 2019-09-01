@@ -40,6 +40,9 @@ class MySqlTest extends ServiceTestCase
 					'MYSQL_USER'          => 'sqladmin',
 					'MYSQL_PASSWORD'      => 'sqladmin',
 				],
+				'networks' => [
+					'joomla',
+				],
 			],
 		];
 

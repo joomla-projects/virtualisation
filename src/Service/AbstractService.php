@@ -66,7 +66,7 @@ abstract class AbstractService implements Service
 	public function getSetup()
 	{
 		$setup = [];
-		foreach ($this->services as $service)
+		foreach ((array) $this->services as $service)
 		{
 			$setup = array_merge($setup, $service->getSetup());
 		}
@@ -81,7 +81,7 @@ abstract class AbstractService implements Service
 	 */
 	public function prepare()
 	{
-		foreach ($this->services as $service)
+		foreach ((array) $this->services as $service)
 		{
 			$service->prepare();
 		}

@@ -42,6 +42,9 @@ class ApacheTest extends ServiceTestCase
 				'environment' => [
 					'VIRTUAL_HOST' => 'j25-mysqli.dev',
 				],
+				'networks' => [
+					'joomla',
+				],
 			],
 		];
 

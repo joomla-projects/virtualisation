@@ -22,7 +22,8 @@
     "greencape/php-versions": "@dev",
     "symfony/yaml": "^3.2",
     "greencape/joomla-cli": "^0.1.0",
-    "alchemy/zippy": "^0.4.4"
+    "alchemy/zippy": "^0.4.4",
+    "ext-simplexml": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"

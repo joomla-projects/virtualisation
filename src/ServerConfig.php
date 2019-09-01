@@ -38,7 +38,7 @@ class ServerConfig
 		'joomla.version'      => "latest",
 		'memcached.enabled'   => "0",
 		'memcached.port'      => "11211",
-		'memcached.version'	  => "latest",
+		'memcached.version'   => "latest",
 		'meta.description'    => "Test installation",
 		'meta.keywords'       => "",
 		'meta.showAuthor'     => "1",
@@ -64,16 +64,18 @@ class ServerConfig
 		'server.type'         => "nginx",
 		'session.handler'     => "database",
 		'session.lifetime'    => "15",
-		'network.name'		  => "joomla",
-		'selenium.no'		  => "1",
-		'selenium.version'	  => "latest",
-		'extension.path'	  => "../../../weblinks/"
+		'network.name'        => "joomla",
+		'selenium.no'         => "1",
+		'selenium.version'    => "latest",
+		'extension.path'      => "../../../weblinks/"
 	];
 
 	/**
 	 * ServerConfig constructor.
 	 */
-	public function __construct() {}
+	public function __construct()
+	{
+	}
 
 	/**
 	 * @param $filename string $filename The path to the configuration file.
@@ -110,7 +112,7 @@ class ServerConfig
 	/**
 	 * Read the configuration
 	 *
-	 * @param   string $filename The path to the configuration file.
+	 * @param string $filename The path to the configuration file.
 	 *
 	 * @return  string[]
 	 */
@@ -118,7 +120,7 @@ class ServerConfig
 	{
 		$config = [];
 
-		$xml = simplexml_load_file($filename);
+		$xml = simplexml_load_string(file_get_contents($filename));
 
 		foreach ($xml->attributes() as $key => $attribute)
 		{
@@ -159,7 +161,7 @@ class ServerConfig
 	/**
 	 * Get a configuration value
 	 *
-	 * @param   string $key The key
+	 * @param string $key The key
 	 *
 	 * @return  string  The value
 	 */

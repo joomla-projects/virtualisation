@@ -275,7 +275,7 @@ class Joomla extends AbstractService
 	{
 		$path    = $config->get('host.dockyard') . '/docker';
 		$server  = $config->get('server.type');
-		$version = $server == 'apache' ? $config->getVersion('php') . '-' . $config->getVersion('joomla') : $config->getVersion('server');
+		$version = $server === 'apache' ? $config->getVersion('php') : $config->getVersion('server');
 
 		return "$path/$server-$version";
 	}

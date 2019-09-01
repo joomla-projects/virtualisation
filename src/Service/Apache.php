@@ -27,7 +27,7 @@ class Apache extends PhpBase
 	{
 		$config = $this->configs[0];
 
-		$name               = 'apache-' . $this->version . '-' . $config->getVersion('joomla');
+		$name               = 'apache-' . $this->version;
 		$dockerPath         = $this->dockyard . '/docker/' . $name;
 		$this->setup[$name] = [
 			'build'       => 'docker/' . $name,
@@ -65,8 +65,7 @@ class Apache extends PhpBase
 	 */
 	public function prepare()
 	{
-		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version . "-" .
-							$this->configs[0]->getVersion('joomla');
+		$dockerPath = $this->dockyard . '/docker/apache-' . $this->version;
 
 		$this->createDockerfile($dockerPath, __DIR__ . '/docker/apache');
 		$this->createVhosts($dockerPath);

@@ -52,7 +52,7 @@ class PostgreSqlTest extends ServiceTestCase
 		$this->service->prepare();
 
 		$this->assertFileContains(
-			'dockyard/postgresql-latest/joomla3.sql',
+			'dockyard/postgresql-latest/00-joomla3.sql',
 			[
 				'CREATE DATABASE "joomla3" OWNER "sqladmin"',
 			]
